@@ -7,10 +7,18 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Scripts/easyui/themes/default/easyui.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Scripts/easyui/themes/icon.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Scripts/easyui/demo/demo.css")" />
+
+    @RenderSection("stysles", false)
 </head>
 <body>
     <div>
         @RenderBody()
     </div>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.min.js?")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.easyui.min.js")"></script>
+    @RenderSection("scripts", false)
 </body>
 </html>

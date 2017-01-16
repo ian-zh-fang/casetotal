@@ -4,5 +4,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<table class="easyui-datagrid" title="" style="width:700px;max-height:250px;min-height:150px;"
+       data-options="url: '@Url.Action("GetData")',method: 'get',fitColumns: true,singleSelect: true,rownumbers: true,showFooter: true">
+    <thead>
+        <tr>
+            <th data-options="field:'itemid'" rowspan="2">Item ID</th>
+            <th data-options="field:'productid'" rowspan="2">Product</th>
+            <th colspan="4">Item Details 1</th>
+        </tr>
+        <tr>
+            <th data-options="field:'listprice',align:'right'">List Price</th>
+            <th data-options="field:'unitcost',align:'right'">Unit Cost</th>
+            <th data-options="field:'attr1'">Attribute</th>
+            <th data-options="field:'status',align:'center'">Status</th>
+        </tr>
+    </thead>
+</table>
+<div style="margin:20px 0;"></div>
+<table class="easyui-datagrid" title="Footer Rows in DataGrid" style="width:700px;height:220px"       
+       data-options="url: '@Url.Action("GetData")',method: 'get',fitColumns: true,singleSelect: true,rownumbers: true,showFooter: true">
+    <thead>
+        <tr>
+            <th data-options="field:'itemid',width:80">Item ID</th>
+            <th data-options="field:'productid',width:120">Product ID</th>
+            <th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+            <th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+            <th data-options="field:'attr1',width:250">Attribute</th>
+            <th data-options="field:'status',width:60,align:'center'">Status</th>
+        </tr>
+    </thead>
+</table>
 
