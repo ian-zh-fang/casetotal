@@ -10,4 +10,9 @@
 
         public string ParentId { get; set; }
     }
+
+    public class OrgClassesTotal:ClassesTotal
+    {
+        public string OrgId { get; set; }
+    }
 }

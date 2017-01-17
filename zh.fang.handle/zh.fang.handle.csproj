@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="CaseClassesHandle.cs" />
     <Compile Include="Handle.cs" />
+    <Compile Include="Model\Classes.cs" />
     <Compile Include="Model\ClassesTotal.cs" />
     <Compile Include="OrgHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

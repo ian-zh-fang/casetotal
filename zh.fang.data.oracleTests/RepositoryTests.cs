@@ -48,6 +48,13 @@ namespace zh.fang.data.oracle.Tests
             Assert.IsTrue(0 == items.Count);
         }
 
+        [TestMethod]
+        public void MainTest()
+        {
+            var tickstr = $"{System.DateTime.Now.Ticks}";
+            var len = tickstr.Length;
+        }
+
         private string GuidToString16()
         {
             long i = 1;

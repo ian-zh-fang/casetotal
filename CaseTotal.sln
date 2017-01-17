@@ -29,6 +29,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zh.fang.handle", "zh.fang.h
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zh.fang.handleTests", "zh.fang.handleTests\zh.fang.handleTests.csproj", "{D59FBDE3-57FA-4DB1-B268-747FFD29BCB5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Common", "05 Common", "{6CA2DD90-4D30-45D2-AA86-06AE44036D7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zh.fang.common", "zh.fang.common\zh.fang.common.csproj", "{071EB8C8-92ED-416C-9455-CC897483FFBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zh.fang.moduleTests", "zh.fang.moduleTests\zh.fang.moduleTests.csproj", "{FC08CBC0-647A-4FD9-8CE5-A0372C92B0D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +73,14 @@ Global
 		{D59FBDE3-57FA-4DB1-B268-747FFD29BCB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D59FBDE3-57FA-4DB1-B268-747FFD29BCB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D59FBDE3-57FA-4DB1-B268-747FFD29BCB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{071EB8C8-92ED-416C-9455-CC897483FFBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{071EB8C8-92ED-416C-9455-CC897483FFBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{071EB8C8-92ED-416C-9455-CC897483FFBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{071EB8C8-92ED-416C-9455-CC897483FFBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC08CBC0-647A-4FD9-8CE5-A0372C92B0D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC08CBC0-647A-4FD9-8CE5-A0372C92B0D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC08CBC0-647A-4FD9-8CE5-A0372C92B0D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC08CBC0-647A-4FD9-8CE5-A0372C92B0D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +94,7 @@ Global
 		{49A91D5C-32F2-4D00-97ED-BB6914E3FA5F} = {0FCC7B72-431D-4041-9564-C9F380A4CF47}
 		{05DB7C59-9111-4010-AB45-C69963AC79E2} = {26CC339E-E431-4763-8FC9-9BE9D2AB6AF7}
 		{D59FBDE3-57FA-4DB1-B268-747FFD29BCB5} = {7CCE6A1D-6647-4E06-8EFF-2D8AEF4C3BDA}
+		{071EB8C8-92ED-416C-9455-CC897483FFBF} = {6CA2DD90-4D30-45D2-AA86-06AE44036D7E}
+		{FC08CBC0-647A-4FD9-8CE5-A0372C92B0D2} = {7CCE6A1D-6647-4E06-8EFF-2D8AEF4C3BDA}
 	EndGlobalSection
 EndGlobal

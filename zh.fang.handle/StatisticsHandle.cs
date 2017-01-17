@@ -15,32 +15,37 @@
         // 4，分案件类型统计本月发生的次数
         // 5，分案件类型统计上一月发生的次数
 
+        /// <summary>
+        /// 分案件类型统计指定时间段内的案件发生次数
+        /// </summary>
+        /// <param name="timeToStart"></param>
+        /// <param name="timeToEnd"></param>
+        /// <returns></returns>
         public IEnumerable<Model.ClassesTotal> ClassesTotal(long timeToStart, long timeToEnd)
         {
-            var now = TimeZone.CurrentTimeZone.ToLocalTime(DateTime.Now).Ticks;
+            var validCodes = new short[] { 0 };
             var query =
-                from cls in Repository.Query<data.entity.CaseClasses>(t => t.IsDel == 0)
-                join clsts in Repository.Query<data.entity.CaseClassesStatistics>(t => t.TotalDate >= timeToStart && t.TotalDate <= timeToEnd)
-                on cls.Id equals clsts.ClassesId into cts
-                from clstt in cts.DefaultIfEmpty()
-                select new { ClassId = cls.Id, ClassName = cls.Name, ParentId = cls.ParentId, total = clstt };
-
-            return
-                query
-                .ToList()
-                .GroupBy(t => t.ClassId)
-                .Select(t =>
-                {
-                    var cls = t.First();
-                    return new Model.ClassesTotal
+                from tts in Repository.Query<data.entity.CaseClassesStatistics>(t => t.TotalDate >= timeToStart && t.TotalDate <= timeToEnd)
+                join clss in Repository.Query<data.entity.CaseClasses>(null) on tts.ClassesId equals clss.Id into clsitems
+                from cls in clsitems.DefaultIfEmpty()
+                where validCodes.Any(t => t == cls.IsDel)
+                select new { total = tts, cls = cls };
+            var items = query.ToList().Where(t => t.cls != null).GroupBy(t => t.cls)
+                .Select(
+                    t => new Model.ClassesTotal
                     {
-                        ClassId = cls.ClassId,
-                        ClassName = cls.ClassName,
-                        ParentId = cls.ParentId,
-                        TotalCount = t.Where(x => x.total != null).Sum(x => x.total.CaseCount)
-                    };
-                })
-                .ToList();
+                        ClassId = t.Key.Id,
+                        ClassName = t.Key.Name,
+                        ParentId = t.Key.ParentId,
+                        TotalCount = t.Select(x => x.total.CaseCount).Sum()
+                    }
+                );
+
+            foreach (var item in items)
+            {
+                item.TotalCount += items.Where(t => t.ParentId == item.ClassId).Select(t => t.TotalCount).Sum();
+            }
+            return items;
         }
     }
 }

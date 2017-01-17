@@ -2,8 +2,9 @@
 namespace zh.fang.handle
 {
     using System;
+    using System.Linq.Expressions;
 
-    public abstract class Handle:System.IDisposable
+    public abstract class Handle: IDisposable
     {
         private repository.IRepository _rep;
 
@@ -34,7 +35,7 @@ namespace zh.fang.handle
             return 0 < Repository.Commit();
         }
 
-        public virtual bool Remove<TModel>(System.Linq.Expressions.Expression<Func<TModel, bool>> predicate)
+        public virtual bool Remove<TModel>(Expression<Func<TModel, bool>> predicate = null)
             where TModel:data.entity.BaseEntity,new()
         {
             Repository.RemoveAny(predicate);
