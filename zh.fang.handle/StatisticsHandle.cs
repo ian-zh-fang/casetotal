@@ -26,9 +26,8 @@
             var validCodes = new short[] { 0 };
             var query =
                 from tts in Repository.Query<data.entity.CaseClassesStatistics>(t => t.TotalDate >= timeToStart && t.TotalDate <= timeToEnd)
-                join clss in Repository.Query<data.entity.CaseClasses>(null) on tts.ClassesId equals clss.Id into clsitems
+                join clss in Repository.Query<data.entity.CaseClasses>(t => validCodes.Any(x => t.IsDel == x)) on tts.ClassesId equals clss.Id into clsitems
                 from cls in clsitems.DefaultIfEmpty()
-                where validCodes.Any(t => t == cls.IsDel)
                 select new { total = tts, cls = cls };
             var items = query.ToList().Where(t => t.cls != null).GroupBy(t => t.cls)
                 .Select(
