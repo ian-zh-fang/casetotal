@@ -16,7 +16,7 @@
     <RootNamespace>zh.fang.website</RootNamespace>
     <AssemblyName>zh.fang.website</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -147,7 +147,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Contents\Size.css" />
+    <Content Include="Contents\Img\PoliceMan.jpg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\baidu\echarts.simple.min.js" />
     <Content Include="Scripts\easyui\changelog.txt" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\basic.html" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\header.html" />
@@ -926,6 +929,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -964,6 +968,10 @@
     <Content Include="Scripts\easyui\demo\tree\tree_data1.json" />
     <Content Include="Scripts\easyui\demo\tree\tree_data2.json" />
     <Content Include="Scripts\easyui\themes\material\images\Thumbs.db" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -991,7 +999,7 @@
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>
           </DevelopmentServerVPath>
-          <IISUrl>http://localhost:5344/</IISUrl>
+          <IISUrl>http://localhost/zh.fang.website</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

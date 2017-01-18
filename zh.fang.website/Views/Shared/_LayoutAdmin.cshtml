@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-@{ 
+@{
     ViewBag.Title = "";
     ViewBag.Copyright = "崇仁县公安局";
 }
@@ -17,17 +17,11 @@
     @RenderSection("stysles", false)
 </head>
 <body>
-    <div style="text-align:center;">
-        @Html.Partial("_Header")
-    </div>
-    <div class="x-body">
+    <div>
         @RenderBody()
     </div>
     <div id="x-footer" style="text-align:center;">
         @Html.Partial($"_Footer")
-        <div style="margin-top:10px;">
-            <a href="@Url.Action("admin")" target="_blank">[ 后台管理 ]</a>
-        </div>
     </div>
     <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.min.js?")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.easyui.min.js")"></script>

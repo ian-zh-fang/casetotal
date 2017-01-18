@@ -1,0 +1,54 @@
+﻿
+.x-clear{
+    zoom:1;
+}
+
+.x-clear:before{
+}
+.x-clear:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+
+a{
+    text-decoration:none;
+}
+
+a:hover, a:visited, a:active{
+    color:blue;
+}
+
+.x-border{
+    border:1px solid #ddd;
+}
+
+.x-body{
+    max-width:980px;
+    text-align:center;
+    margin:0px auto;
+}
+
+.x-clear-border{    
+    border-width:0px;
+}
+
+.x-index-chart-left{
+    width:420px;
+    max-width:420px;
+    min-height:520px;
+    text-align:center;
+    margin:0px auto;
+    float:left;
+    background-color:aliceblue;
+}
+
+.x-index-chart-right{  
+    width:560px;
+    max-width:570px;
+    min-height:520px;
+    text-align:center;
+    margin:0px auto;
+    float:right;
+    background-color:antiquewhite;
+}

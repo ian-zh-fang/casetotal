@@ -3,24 +3,35 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/baidu/echarts.simple.min.js")"></script>
+}
 
-<table class="easyui-datagrid" title="" style="width:700px;max-height:250px;min-height:150px;"
-       data-options="url: '@Url.Action("GetData")',method: 'get',fitColumns: true,singleSelect: true,rownumbers: true,showFooter: true">
-    <thead>
-        <tr>
-            <th data-options="field:'itemid'" rowspan="2">Item ID</th>
-            <th data-options="field:'productid'" rowspan="2">Product</th>
-            <th colspan="4">Item Details 1</th>
-        </tr>
-        <tr>
-            <th data-options="field:'listprice',align:'right'">List Price</th>
-            <th data-options="field:'unitcost',align:'right'">Unit Cost</th>
-            <th data-options="field:'attr1'">Attribute</th>
-            <th data-options="field:'status',align:'center'">Status</th>
-        </tr>
-    </thead>
-</table>
-<div style="margin:20px 0;"></div>
+<div class="x-clear-border x-clear">
+    <div class="x-index-chart-left x-clear-border"></div>
+    <div class="x-index-chart-right x-clear-border"></div>
+</div>
+
+<div style="margin-top:20px;">
+    <table class="easyui-datagrid" title="" style="width:100%;max-height:250px;min-height:150px;"
+           data-options="url: '@Url.Action("GetData")',method: 'get',fitColumns: true,singleSelect: true,rownumbers: true,showFooter: true">
+        <thead>
+            <tr>
+                <th data-options="field:'itemid'" rowspan="2">Item ID</th>
+                <th data-options="field:'productid'" rowspan="2">Product</th>
+                <th colspan="4">Item Details 1</th>
+            </tr>
+            <tr>
+                <th data-options="field:'listprice',align:'right'">List Price</th>
+                <th data-options="field:'unitcost',align:'right'">Unit Cost</th>
+                <th data-options="field:'attr1'">Attribute</th>
+                <th data-options="field:'status',align:'center'">Status</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@*<div style="margin:20px 0;"></div>
 <table class="easyui-datagrid" title="Footer Rows in DataGrid" style="width:700px;height:220px"       
        data-options="url: '@Url.Action("GetData")',method: 'get',fitColumns: true,singleSelect: true,rownumbers: true,showFooter: true">
     <thead>
@@ -33,5 +44,5 @@
             <th data-options="field:'status',width:60,align:'center'">Status</th>
         </tr>
     </thead>
-</table>
+</table>*@
 

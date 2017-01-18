@@ -10,6 +10,11 @@
             return View();
         }
 
+        public ActionResult Admin()
+        {
+            return RedirectToAction("index", "admin");
+        }
+
         public JsonResult GetData()
         {
             var data = new object[] {
