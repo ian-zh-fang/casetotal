@@ -37,5 +37,25 @@ namespace zh.fang.module.Tests
             result = module.ClassesTotal(timeToStart, timeToEnd);
             Assert.IsTrue(clsCount == result.Count());
         }
+
+        [TestMethod()]
+        public void OrgClassTotalTest()
+        {
+            var clsModule = new ClassesModule();
+            var clsItems = clsModule.FetchAll();
+            var clsCount = clsItems.Count();
+
+            var orgModule = new OrgModule();
+            var orgItems = orgModule.FetchAll();
+            var orgCount = orgItems.Count();
+
+            var totalModule = new StatisticsModule();
+            var result = totalModule.OrgClassTotalOnToday();
+            Assert.IsTrue(orgCount == result.Count());
+            foreach (var total in result)
+            {
+                Assert.IsTrue(clsCount == total.ClassesTotals.Count());
+            }
+        }
     }
 }

@@ -6,6 +6,9 @@ namespace zh.fang.handle
 
     public abstract class Handle: IDisposable
     {
+        // 未删除状态类型
+        public static readonly short[] NonDeletedStatus = { 0 };
+
         private repository.IRepository _rep;
 
         protected Handle()

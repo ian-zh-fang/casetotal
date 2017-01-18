@@ -1,6 +1,5 @@
 ﻿namespace zh.fang.handle
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -9,12 +8,6 @@
     /// </summary>
     public class StatisticsHandle:Handle
     {
-        // 1，分案件类型统计当日发生的次数
-        // 2，分案件类型统计本周发生的次数
-        // 3，分案件类型统计上一周发生的次数
-        // 4，分案件类型统计本月发生的次数
-        // 5，分案件类型统计上一月发生的次数
-
         /// <summary>
         /// 分案件类型统计指定时间段内的案件发生次数
         /// </summary>
@@ -23,10 +16,9 @@
         /// <returns></returns>
         public IEnumerable<Model.ClassesTotal> ClassesTotal(long timeToStart, long timeToEnd)
         {
-            var validCodes = new short[] { 0 };
             var query =
                 from tts in Repository.Query<data.entity.CaseClassesStatistics>(t => t.TotalDate >= timeToStart && t.TotalDate <= timeToEnd)
-                join clss in Repository.Query<data.entity.CaseClasses>(t => validCodes.Any(x => t.IsDel == x)) on tts.ClassesId equals clss.Id into clsitems
+                join clss in Repository.Query<data.entity.CaseClasses>(t => NonDeletedStatus.Any(x => t.IsDel == x)) on tts.ClassesId equals clss.Id into clsitems
                 from cls in clsitems.DefaultIfEmpty()
                 select new { total = tts, cls = cls };
             var items = query.ToList().Where(t => t.cls != null).GroupBy(t => t.cls)
@@ -44,6 +36,40 @@
             {
                 item.TotalCount += items.Where(t => t.ParentId == item.ClassId).Select(t => t.TotalCount).Sum();
             }
+            return items;
+        }
+        
+        /// <summary>
+        /// 分组织机构和案件类型统计指定时间段内的案件发生次数
+        /// </summary>
+        /// <param name="timeToStart"></param>
+        /// <param name="timeToEnd"></param>
+        /// <returns></returns>
+        public IEnumerable<Model.OrgClassesTotal> OrgClassesTotal(long timeToStart, long timeToEnd)
+        {
+            var query =
+                from total in Repository.Query<data.entity.CaseClassesStatistics>(t => t.TotalDate >= timeToStart && t.TotalDate <= timeToEnd)
+                join orgitem in Repository.Query<data.entity.Orgnization>(t => NonDeletedStatus.Any(x => t.IsDel == x)) on total.OrgId equals orgitem.Id into orgs
+                from org in orgs.DefaultIfEmpty()
+                join clsitem in Repository.Query<data.entity.CaseClasses>(t => NonDeletedStatus.Any(x => t.IsDel == x)) on total.ClassesId equals clsitem.Id into clsitems
+                from cls in clsitems.DefaultIfEmpty()
+                select new { total = total, org = org, cls=cls };
+            var items =
+                query.ToList().Where(t => t.org != null && t.cls != null).GroupBy(t => t.org)
+                .Select(t => new Model.OrgClassesTotal
+                {
+                    OrgId = t.Key.Id,
+                    OrgName = t.Key.Name,
+                    ParentId = t.Key.ParentId,
+                    Order = t.Key.Code.Length,
+                    ClassesTotals = t.GroupBy(x => x.cls).Select(x => new Model.ClassesTotal
+                    {
+                        ClassId = x.Key.Id,
+                        ClassName = x.Key.Name,
+                        ParentId = x.Key.ParentId,
+                        TotalCount = x.Sum(y => y.total.CaseCount)
+                    })
+                });
             return items;
         }
     }

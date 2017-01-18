@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26020.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 UI", "01 UI", "{197DF0EB-2A7E-4790-871B-064CED86AB88}"
 EndProject
@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zh.fang.moduleTests", "zh.f
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "21 Documents", "21 Documents", "{14C9B468-0857-4F8C-88A1-EDBEFA88191B}"
 	ProjectSection(SolutionItems) = preProject
+		CreateDatabase.sql = CreateDatabase.sql
+		CreateTable.sql = CreateTable.sql
 		Database.sql = Database.sql
 	EndProjectSection
 EndProject

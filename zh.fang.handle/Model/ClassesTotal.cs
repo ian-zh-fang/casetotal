@@ -11,8 +11,19 @@
         public string ParentId { get; set; }
     }
 
-    public class OrgClassesTotal:ClassesTotal
+    public class OrgClassesTotal
     {
         public string OrgId { get; set; }
+
+        public string OrgName { get; set; }
+
+        public string ParentId { get; set; }
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int Order { get; set; }
+
+        public System.Collections.Generic.IEnumerable<ClassesTotal> ClassesTotals { get; set; }
     }
 }

@@ -10,7 +10,7 @@
     {
         public IEnumerable<data.entity.CaseClasses> FetchAll()
         {
-            return Repository.Query<data.entity.CaseClasses>(t => t.IsDel == 0).ToList();
+            return Repository.Query<data.entity.CaseClasses>(t => NonDeletedStatus.Any(x => t.IsDel == x)).ToList();
         }
     }
 }
