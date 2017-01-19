@@ -40,7 +40,6 @@ a:hover, a:visited, a:active{
     text-align:center;
     margin:0px auto;
     float:left;
-    /*background-color:aliceblue;*/
 }
 
 .x-index-chart-right{  
@@ -50,5 +49,4 @@ a:hover, a:visited, a:active{
     text-align:center;
     margin:0px auto;
     float:right;
-    /*background-color:antiquewhite;*/
 }

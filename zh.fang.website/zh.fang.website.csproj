@@ -16,7 +16,7 @@
     <RootNamespace>zh.fang.website</RootNamespace>
     <AssemblyName>zh.fang.website</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -150,6 +150,7 @@
     <Content Include="Contents\Size.css" />
     <Content Include="Contents\Img\PoliceMan.jpg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\baidu\echarts.min.js" />
     <Content Include="Scripts\baidu\echarts.simple.min.js" />
     <Content Include="Scripts\easyui\changelog.txt" />
     <Content Include="Scripts\easyui\demo-mobile\accordion\basic.html" />
@@ -934,6 +935,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChartModel.cs" />
+    <Compile Include="Models\ClsTotalTableModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -981,7 +984,32 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\zh.fang.common\zh.fang.common.csproj">
+      <Project>{071eb8c8-92ed-416c-9455-cc897483ffbf}</Project>
+      <Name>zh.fang.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\zh.fang.data.entity\zh.fang.data.entity.csproj">
+      <Project>{123d7b2b-5101-4eaa-b928-bc839b5dfda3}</Project>
+      <Name>zh.fang.data.entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\zh.fang.data.oracle\zh.fang.data.oracle.csproj">
+      <Project>{4c06d49b-bd17-4d13-bcf3-23b1e66e46a9}</Project>
+      <Name>zh.fang.data.oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\zh.fang.handle\zh.fang.handle.csproj">
+      <Project>{05db7c59-9111-4010-ab45-c69963ac79e2}</Project>
+      <Name>zh.fang.handle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\zh.fang.module\zh.fang.module.csproj">
+      <Project>{49a91d5c-32f2-4d00-97ed-bb6914e3fa5f}</Project>
+      <Name>zh.fang.module</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\zh.fang.repository\zh.fang.repository.csproj">
+      <Project>{66d5aa78-c08e-4263-a276-ad2d98d9fe93}</Project>
+      <Name>zh.fang.repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,177 +1,210 @@
-﻿
+﻿@model zh.fang.website.Models.ClsTotalTableHeaderModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section scripts{
-    <script type="text/javascript" src="@Url.Content("~/Scripts/baidu/echarts.simple.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/baidu/echarts.min.js")"></script>
     <script type="text/javascript">
 
         function drawPieOnToday(id)
         {
             var myChart = echarts.init(document.getElementById(id));
-            var option = {
-                title: {
-                    text: '本日案件分类统计'
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
-                },
-                legend: {
-                    orient: 'vertical',
-                    x: 'left',
-                    data: ['直达', '营销广告', '搜索引擎', '邮件营销', '联盟广告', '视频广告', '百度', '谷歌', '必应', '其他']
-                },
-                series: [
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        selectedMode: 'single',
-                        radius: [0, '30%'],
-
-                        label: {
-                            normal: {
-                                position: 'inner'
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: false
-                            }
-                        },
-                        data: [
-                            { value: 335, name: '直达', selected: true },
-                            { value: 679, name: '营销广告' },
-                            { value: 1548, name: '搜索引擎' }
-                        ]
+            $.get("@Url.Action("ClsTotalOnToday")", null, function (data) {
+                var option = {
+                    title: {
+                        text: '本日案件分类统计数据'
                     },
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius: ['40%', '55%'],
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'horizontal',
+                        bottom: 20,
+                        data: data.legends
+                    },
+                    series: [
+                        {
+                            name: '分类合计',
+                            type: 'pie',
+                            selectedMode: 'single',
+                            center: ['50%', '40%'],
+                            radius: [0, '30%'],
 
-                        data: [
-                            { value: 335, name: '直达' },
-                            { value: 310, name: '邮件营销' },
-                            { value: 234, name: '联盟广告' },
-                            { value: 135, name: '视频广告' },
-                            { value: 1048, name: '百度' },
-                            { value: 251, name: '谷歌' },
-                            { value: 147, name: '必应' },
-                            { value: 102, name: '其他' }
-                        ]
-                    }
-                ]
-            };
-            myChart.setOption(option);
+                            label: {
+                                normal: {
+                                    position: 'inner'
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    show: false
+                                }
+                            },
+                            data: data.itotals
+                        },
+                        {
+                            name: '分类详细',
+                            type: 'pie',
+                            center: ['50%', '40%'],
+                            radius: ['40%', '55%'],
+
+                            data: data.ototals
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            });
+        }
+
+        function drawCompareBar(id, url)
+        {
+            var myChart = echarts.init(document.getElementById(id));
+            $.get(url, null, function (data) {
+                var option = {
+                    title: {
+                        text: data.title
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    toolbox: {
+                        feature: {
+                            dataView: { show: true, readOnly: false },
+                            magicType: { show: true, type: ['line', 'bar'] },
+                            restore: { show: true },
+                            saveAsImage: { show: true }
+                        }
+                    },
+                    legend: {
+                        data: data.legends
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: data.categories
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '次数'
+                        },
+                        {
+                            type: 'value',
+                            name: '环比'
+                        }
+                    ],
+                    series: [
+                        {
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            name: data.item1.name,
+                            type: 'bar',
+                            data: data.item1.totals
+                        },
+                        {
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            name: data.item2.name,
+                            type: 'bar',
+                            data: data.item2.totals
+                        },
+                        {
+                            name: data.lrr.name,
+                            type: 'line',
+                            yAxisIndex: 1,
+                            data: data.lrr.totals
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            });
         }
 
         function drawBarOnWeek(id)
         {
-            var myChart = echarts.init(document.getElementById(id));
-
-            var option = {
-                title: {
-                    text: '本周案件分类统计'
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                legend: {
-                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎', '百度', '谷歌', '必应', '其他']
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: [
-                    {
-                        type: 'category',
-                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value'
-                    }
-                ],
-                series: [
-                    {
-                        name: '直接访问',
-                        type: 'bar',
-                        data: [320, 332, 301, 334, 390, 330, 320]
-                    },
-                    {
-                        name: '邮件营销',
-                        type: 'bar',
-                        stack: '广告',
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    }
-                ]
-            };
-            myChart.setOption(option);
+            drawCompareBar(id, "@Url.Action("ClsTotalCompareOnWeek")");
         }
 
         function drawBarOnMonth(id)
         {
-            var myChart = echarts.init(document.getElementById(id));
+            drawCompareBar(id, "@Url.Action("ClsTotalCompareOnMonth")");
         }
 
         $(document).ready(function () {
             drawPieOnToday('x-pie-today');
             drawBarOnWeek('x-bar-week');
-            drawBarOnWeek('x-bar-month');
+            drawBarOnMonth('x-bar-month');
         });
     </script>
 }
 
 <div class="x-clear-border x-clear">
     <div class="x-index-chart-left x-clear-border">
-        <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #ddd; min-height:500px; "></div>
+        <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #95B8E7; min-height:500px; "></div>
     </div>
     <div class="x-index-chart-right x-clear-border">
-        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #ddd; min-height:240px; "></div>
-        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #ddd; min-height:240px; "></div>
+        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7; min-height:200px; "></div>
+        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7; min-height:280px; "></div>
     </div>
 </div>
 
 <div style="margin-top:20px;">
-    <table class="easyui-datagrid" title="" style="width:100%;max-height:250px;min-height:150px;"
-           data-options="url: '@Url.Action("GetData")',method: 'get',fitColumns: true,singleSelect: true,rownumbers: true,showFooter: true">
+    <table class="easyui-datagrid" title="" style="width:100%;min-height:150px;"
+           data-options="
+               url: '@Url.Action("GetData")',
+               method: 'get',
+               idField:'id',
+               treeField:'company',
+               fitColumns: true,
+               singleSelect: false,
+               checkOnSelect:false,
+               rownumbers: true,
+               showFooter: true
+           ">
         <thead>
             <tr>
-                <th data-options="field:'itemid'" rowspan="2">Item ID</th>
-                <th data-options="field:'productid'" rowspan="2">Product</th>
-                <th colspan="4">Item Details 1</th>
+                <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
+                <th data-options="field:'@Model.total.field',align:'center',width:1" rowspan="2">@Model.total.title</th>
+                @foreach (var item in Model.items)
+                {
+                    if (0 == item.items.Length)
+                    {
+                        <th data-options="field:'@item.field',align:'center',width:1" rowspan="2">@Html.Raw(item.title)</th>
+                        continue;
+                    }
+                    <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
+                }
             </tr>
             <tr>
-                <th data-options="field:'listprice',align:'right'">List Price</th>
-                <th data-options="field:'unitcost',align:'right'">Unit Cost</th>
-                <th data-options="field:'attr1'">Attribute</th>
-                <th data-options="field:'status',align:'center'">Status</th>
+                @foreach (var item in Model.items)
+                {
+                    <th data-options="field:'@item.field',align:'center',width:1">小计</th>
+                    foreach (var cell in item.items)
+                    {
+                        <th data-options="field:'@cell.field',align:'center',width:1">@Html.Raw(cell.title)</th>
+                    }
+                }
             </tr>
         </thead>
     </table>
 </div>
-
-@*<div style="margin:20px 0;"></div>
-<table class="easyui-datagrid" title="Footer Rows in DataGrid" style="width:700px;height:220px"       
-       data-options="url: '@Url.Action("GetData")',method: 'get',fitColumns: true,singleSelect: true,rownumbers: true,showFooter: true">
-    <thead>
-        <tr>
-            <th data-options="field:'itemid',width:80">Item ID</th>
-            <th data-options="field:'productid',width:120">Product ID</th>
-            <th data-options="field:'listprice',width:80,align:'right'">List Price</th>
-            <th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
-            <th data-options="field:'attr1',width:250">Attribute</th>
-            <th data-options="field:'status',width:60,align:'center'">Status</th>
-        </tr>
-    </thead>
-</table>*@
-

@@ -56,6 +56,9 @@ namespace zh.fang.module.Tests
             {
                 Assert.IsTrue(clsCount == total.ClassesTotals.Count());
             }
+
+            result = totalModule.OrgClassTotal(DateTime.Now.AddDays(-2), DateTime.Now);
+            Assert.IsTrue(orgCount == result.Count());
         }
     }
 }
