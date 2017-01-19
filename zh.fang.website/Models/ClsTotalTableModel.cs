@@ -1,8 +1,9 @@
-﻿using System;
-using zh.fang.handle.Model;
-
+﻿
 namespace zh.fang.website.Models
 {
+    using System;
+    using System.Linq;
+    using zh.fang.handle.Model;
 
     public class ClsTotalTableCellModel
     {
@@ -22,7 +23,7 @@ namespace zh.fang.website.Models
 
         public ClsTotalTableCellModel parentId
         {
-            get { return new ClsTotalTableCellModel { field = "parentId", title = "PID", items = new ClsTotalTableCellModel[0] }; }
+            get { return new ClsTotalTableCellModel { field = "_parentId", title = "PID", items = new ClsTotalTableCellModel[0] }; }
         }
 
         public ClsTotalTableCellModel company
@@ -56,7 +57,31 @@ namespace zh.fang.website.Models
             result[header.id.field] = data.OrgId;
             result[header.parentId.field] = data.ParentId;
             result[header.company.field] = data.OrgName;
-            
+            var total = 0;
+            foreach (var item in header.items)
+            {
+                var clsval = data.ClassesTotals.FirstOrDefault(t => t.ClassId == item.field);
+                var val = 0;
+                if (null != clsval)
+                {
+                    val = clsval.TotalCount;
+                }
+                result[item.field] = val;
+                total += val;
+
+                foreach (var cell in item.items)
+                {
+                    clsval = data.ClassesTotals.FirstOrDefault(t => t.ClassId == cell.field);
+                    val = 0;
+                    if (null != clsval)
+                    {
+                        val = clsval.TotalCount;
+                    }
+                    result[cell.field] = clsval.TotalCount;
+                    total += val;
+                }
+            }
+            result[header.total.field] = total;
 
             return result;
         }

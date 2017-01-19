@@ -1,6 +1,5 @@
 ﻿namespace zh.fang.website.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -38,30 +37,25 @@
             return RedirectToAction("index", "admin");
         }
 
+        [HttpGet]
         public JsonResult GetData()
         {
-            var items = new List<object>();
+            var module = new module.StatisticsModule();
+            var header = GetTableHeader();
+            var model = new Models.OrgClsTotalModel();
+            var items = module.OrgClassTotalOnToday().Select(t => model.GetData(t, header));
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult ClsTotalOnToday()
         {
+            var module = new module.StatisticsModule();
+            var items = module.ClassesTotalOnToday();
             var data = new Models.ClsTotalOnTodayModel
             {
-                itotals = new Models.ClsTotalValue[] {
-                    new Models.ClsTotalValue { name="itotal1", value=0 },
-               new Models.ClsTotalValue { name="itotal2", value=0 },
-                    new Models.ClsTotalValue { name="itotal3", value=0 }
-                },
-                ototals = new Models.ClsTotalValue[] {
-                    new Models.ClsTotalValue { name="ototal1", value=0 },
-                    new Models.ClsTotalValue { name="ototal2", value=0 },
-                    new Models.ClsTotalValue { name="ototal3", value=0 },
-                    new Models.ClsTotalValue { name="ototal4", value=0 },
-                    new Models.ClsTotalValue { name="ototal5", value=0 },
-                    new Models.ClsTotalValue { name="ototal6", value=0 }
-                }
+                itotals = items.Where(t => t.ParentId == null).Select(t => new Models.ClsTotalValue { name = t.ClassName, value = t.TotalCount }).ToArray(),
+                ototals = items.Where(t => t.ParentId != null).Select(t => new Models.ClsTotalValue { name = t.ClassName, value = t.TotalCount }).ToArray()
             };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
@@ -69,12 +63,15 @@
         [HttpGet]
         public JsonResult ClsTotalCompareOnWeek()
         {
+            var module = new module.StatisticsModule();
+            var items = module.ClassesTotalOnCurrentWeek();
+            var preitems = module.ClassesTotalOnPreviousWeek();
             var data = new Models.ClsTotalCompareModel
             {
                 title = "周环比",
-                categories = new string[] { "刑事", "治安", "其它", "杀人", "两抢", "交通", "火灾" },
-                item1 = new Models.ClsTotalCompareValue<int> { name = "本周", totals = new int[] {10,2,5,2,7,4,3 } },
-                item2 = new Models.ClsTotalCompareValue<int> { name = "上周", totals = new int[] {4,6,9,0,3,7,0 } }
+                categories = items.Select(t => t.ClassName).ToArray(),
+                item1 = new Models.ClsTotalCompareValue<int> { name = "本周", totals = items.Select(t => t.TotalCount).ToArray() },
+                item2 = new Models.ClsTotalCompareValue<int> { name = "上周", totals = preitems.Select(t => t.TotalCount).ToArray() }
             };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
@@ -82,12 +79,15 @@
         [HttpGet]
         public JsonResult ClsTotalCompareOnMonth()
         {
+            var module = new module.StatisticsModule();
+            var items = module.ClassesTotalOnCurrentMonth();
+            var preitems = module.ClassesTotalOnPreMonth();
             var data = new Models.ClsTotalCompareModel
             {
                 title = "月环比",
-                categories = new string[] { "刑事", "治安", "其它", "杀人", "两抢", "交通", "火灾" },
-                item1 = new Models.ClsTotalCompareValue<int> { name = "本月", totals = new int[] { 10, 20, 5, 25, 7, 47, 3 } },
-                item2 = new Models.ClsTotalCompareValue<int> { name = "上月", totals = new int[] { 4, 6, 90, 0, 3, 7, 20 } }
+                categories = items.Select(t => t.ClassName).ToArray(),
+                item1 = new Models.ClsTotalCompareValue<int> { name = "本月", totals = items.Select(t => t.TotalCount).ToArray() },
+                item2 = new Models.ClsTotalCompareValue<int> { name = "上月", totals = preitems.Select(t => t.TotalCount).ToArray() }
             };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
