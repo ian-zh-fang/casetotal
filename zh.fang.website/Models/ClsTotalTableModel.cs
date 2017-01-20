@@ -3,6 +3,7 @@ namespace zh.fang.website.Models
 {
     using System;
     using System.Linq;
+    using Newtonsoft.Json.Linq;
     using zh.fang.handle.Model;
 
     public class ClsTotalTableCellModel
@@ -26,6 +27,11 @@ namespace zh.fang.website.Models
             get { return new ClsTotalTableCellModel { field = "_parentId", title = "PID", items = new ClsTotalTableCellModel[0] }; }
         }
 
+        public ClsTotalTableCellModel rawId
+        {
+            get { return new ClsTotalTableCellModel { field = "rawId", title = "rawId", items = new ClsTotalTableCellModel[0] }; }
+        }
+
         public ClsTotalTableCellModel company
         {
             get { return new ClsTotalTableCellModel { field = "company", title = "组织机构", items = new ClsTotalTableCellModel[0] }; }
@@ -39,23 +45,27 @@ namespace zh.fang.website.Models
         public ClsTotalTableCellModel[] items { get; set; }
     }
 
-    public interface IClsTotalTableDataModel<T>
+    public interface IClsTotalTableDataModel<T, TResult>
     {
-        object GetData(T data, ClsTotalTableHeaderModel header);
+        TResult GetData(T data, ClsTotalTableHeaderModel header);
     }
 
-    public class OrgClsTotalModel : IClsTotalTableDataModel<OrgClassesTotal>
+    public class OrgClsTotalModel : IClsTotalTableDataModel<OrgClassesTotal, JObject>
     {
-        public object GetData(OrgClassesTotal data, ClsTotalTableHeaderModel header)
+        public JObject GetData(OrgClassesTotal data, ClsTotalTableHeaderModel header)
         {
             if (data == null)
             {
                 throw new ArgumentNullException(nameof(data));
             }
 
-            dynamic result = new { };
-            result[header.id.field] = data.OrgId;
-            result[header.parentId.field] = data.ParentId;
+            var result = new JObject();
+            var hashId = data.OrgId.GetHashCode();
+            result[header.id.field] = hashId;
+            if (!string.IsNullOrWhiteSpace(data.ParentId))
+            {
+                result[header.parentId.field] = data.ParentId.GetHashCode();
+            }
             result[header.company.field] = data.OrgName;
             var total = 0;
             foreach (var item in header.items)
@@ -82,7 +92,6 @@ namespace zh.fang.website.Models
                 }
             }
             result[header.total.field] = total;
-
             return result;
         }
     }

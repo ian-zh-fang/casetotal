@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "SetPasswd";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="x-clear-border" style="text-align:center;margin:120px auto; max-width:400px;">
+    <div class="easyui-panel x-clear-border">
+        <form id="form-login" method="post" action="@Url.Action("ChangePasswd")">
+            <table class="x-clear-border">
+                <tr>
+                    <td>旧密码：</td>
+                    <td><input type="password" class="easyui-textbox" id="oldpwd" name="oldpwd" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td>新密码：</td>
+                    <td><input type="password" class="easyui-textbox" id="newpwd" name="newpwd" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td>确认新密码：</td>
+                    <td><input type="password" class="easyui-textbox" id="cfmpwd" name="cfmpwd" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" class="easyui-linkbutton" value="修&nbsp;&nbsp;&nbsp;&nbsp;改" style="min-height:26px; min-width:80px;" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -12,12 +12,31 @@
     <link type="text/css" rel="stylesheet" href="@Url.Content("~/Scripts/easyui/themes/default/easyui.css")" />
     <link type="text/css" rel="stylesheet" href="@Url.Content("~/Scripts/easyui/themes/icon.css")" />
     <link type="text/css" rel="stylesheet" href="@Url.Content("~/Scripts/easyui/demo/demo.css")" />
-    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Contents/Size.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Contents/Site.css")" />
 
     @RenderSection("stysles", false)
 </head>
 <body>
-    <div>
+    <div id="header" class="x-clear-border" style="margin:0px auto; text-align:center;">
+        <div>
+            <span style="font-size:28px; font-family:STSong;">
+                案件预警信息平台
+            </span>
+        </div>
+        <div style="margin:5px auto 10px auto;">
+            <span style="font-size:14px; font-family:STSong;">
+                后台管理系统
+            </span>
+        </div>
+    </div>
+    <div id="x-bar-nav">
+        <div class="x-nav-content">
+            {账户名称} 欢迎您 !
+            <a style="margin-left:10px;" href="@Url.Action("SetPasswd", "Admin")">修改密码</a>
+            <a style="margin-left:10px;" href="@Url.Action("signout", "Admin")">退出</a>
+        </div>
+    </div>
+    <div class="x-body">
         @RenderBody()
     </div>
     <div id="x-footer" style="text-align:center;">

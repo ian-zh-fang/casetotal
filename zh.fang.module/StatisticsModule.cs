@@ -231,7 +231,7 @@
         // 比较两个值，并返回两个值组成的组元实例，这个组元的第一个值总是比第二个值要小
         private Tuple<long, long> CompareSwitchTimestamp(long timestamp1, long timestamp2)
         {
-            if(timestamp1 > timestamp2)
+            if(timestamp1 <= timestamp2)
             {
                 return Tuple.Create(timestamp1, timestamp2);
             }

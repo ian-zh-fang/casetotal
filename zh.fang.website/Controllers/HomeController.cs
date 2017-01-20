@@ -1,7 +1,9 @@
 ﻿namespace zh.fang.website.Controllers
 {
+    using System;
     using System.Linq;
     using System.Web.Mvc;
+    using Newtonsoft.Json.Linq;
 
     public class HomeController : Controller
     {
@@ -34,17 +36,22 @@
 
         public ActionResult Admin()
         {
-            return RedirectToAction("index", "admin");
+            return RedirectToAction("login", "admin");
         }
 
         [HttpGet]
-        public JsonResult GetData()
+        public JObject GetData()
         {
             var module = new module.StatisticsModule();
             var header = GetTableHeader();
             var model = new Models.OrgClsTotalModel();
-            var items = module.OrgClassTotalOnToday().Select(t => model.GetData(t, header));
-            return Json(items, JsonRequestBehavior.AllowGet);
+            var items = module.OrgClassTotalOnToday().Select(t => model.GetData(t, header)).ToArray();
+            var data = new JArray(items);
+            var json = new JObject();
+            json["total"] = items.Count();
+            json["rows"] = data;
+            json["footer"] = new JArray();
+            return json;
         }
 
         [HttpGet]

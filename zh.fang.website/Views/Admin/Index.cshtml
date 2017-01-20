@@ -4,5 +4,9 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>开发中</h2>
-
+<div class="easyui-layout" style="min-height:400px; margin-top:5px;">
+    <div data-options="region:'west'" title="" style="width:260px;"></div>
+    <div data-options="region:'center'" title="" class="x-clear-border">
+        <iframe id="x-main-frame" class="x-clear-border" src="@Url.Action("index", "cls")"></iframe>
+    </div>
+</div>

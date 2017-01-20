@@ -22,6 +22,8 @@
                     legend: {
                         orient: 'horizontal',
                         bottom: 20,
+                        left: 20,
+                        right:20,
                         data: data.legends
                     },
                     series: [
@@ -169,17 +171,15 @@
 </div>
 
 <div style="margin-top:20px;">
-    <table class="easyui-datagrid" title="" style="width:100%;min-height:150px;"
+    <table class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
            data-options="
-               url: '@Url.Action("GetData")',
-               method: 'get',
-               idField:'id',
-               treeField:'company',
-               fitColumns: true,
-               singleSelect: false,
-               checkOnSelect:false,
-               rownumbers: true,
-               showFooter: true
+            url: '@Url.Action("GetData")',
+            method: 'get',
+            rownumbers: true,
+            showFooter: true,
+            fitColumns: true,
+            idField: 'id',
+            treeField: 'company'
            ">
         <thead>
             <tr>
