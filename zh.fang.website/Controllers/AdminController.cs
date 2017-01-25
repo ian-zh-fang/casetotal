@@ -33,10 +33,10 @@
             return RedirectToAction("index", "cls");
         }
 
-        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.HttpGet]
         public ActionResult Signout()
         {
-            return RedirectToAction("signin");
+            return RedirectToAction("Login");
         }
     }
 }

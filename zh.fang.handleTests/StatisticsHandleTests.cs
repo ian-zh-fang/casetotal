@@ -185,6 +185,11 @@ namespace zh.fang.handle.Tests
                 AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "巴山镇", org);
                 AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "桃源乡", org);
                 AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "马鞍镇", org);
+                for (int i = 0; i < 12; i++)
+                {
+
+                    AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, $"测试乡镇名称 {i}", org);
+                }
 
                 var items = ((StatisticsHandle)totalHandler).OrgClassesTotal(DateTime.Now.AddDays(-1).ToUnixTime(), DateTime.Now.ToUnixTime());
                 Assert.IsTrue(0 <= items.Count());

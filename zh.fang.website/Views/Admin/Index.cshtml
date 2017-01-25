@@ -4,9 +4,38 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="easyui-layout" style="min-height:400px; margin-top:5px;">
-    <div data-options="region:'west'" title="" style="width:260px;"></div>
-    <div data-options="region:'center'" title="" class="x-clear-border">
-        <iframe id="x-main-frame" class="x-clear-border" src="@Url.Action("index", "cls")"></iframe>
+<div id="x-body-main"  class="easyui-layout x-clear-border" style="margin-top:5px;">
+    <div id="x-main-left" data-options="region:'west'" class="x-clear-border" title="" style="width:220px; ">        
+        <ul>            
+            <li class="x-nav-bar-left" onclick="navClickCallback('@Url.Action("index", "cls")');">                
+                <a href="@Url.Action("index", "cls")" onclick="return false;">{ 案件类型管理 }</a>
+            </li>
+            <li class="x-nav-bar-left" onclick="navClickCallback('@Url.Action("index", "org")');">                
+                <a href="@Url.Action("index", "org")" onclick="return false;">{ 组织机构管理 }</a>
+            </li>
+            <li class="x-nav-bar-left" onclick="navClickCallback('@Url.Action("index", "Prewarm")');">
+                <a href="@Url.Action("index", "Prewarm")" onclick="return false;">{ 预警信息管理 }</a>
+            </li>
+        </ul>
+    </div>
+    <div id="x-main-center" data-options="region:'center'" title="" class="x-clear-border" style="">
+        <iframe id="x-main-frame" class="x-clear-border" src="@Url.Action("index", "cls")" style="width:98%; height:98%;"></iframe>
     </div>
 </div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        var navClickCallback = function (url) {
+            $("#x-main-frame").attr("src", url);
+        }
+
+        $(document).ready(function () {
+            var consthg = 55;
+            var windhg = $(window).height() - document.headerheight - document.footerheight - consthg;
+            $("#x-body-main").css("min-height", windhg);
+            $("#x-main-center").css("min-height", windhg - 6);
+            $("#x-main-left").css("min-height", windhg - 6);
+        });
+    </script>
+}

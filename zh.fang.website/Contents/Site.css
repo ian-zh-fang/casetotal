@@ -66,3 +66,25 @@ a:hover, a:visited, a:active{
     max-width:980px;
     color:white;
 }
+
+ul{
+    list-style:none;
+    list-style-type:none;
+}
+
+ul li{
+    height:30px;
+    line-height:30px;
+    background-color:beige;
+}
+
+.x-nav-bar-left {
+    margin-left: -30px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 2px #95B8E7 double;
+    cursor:pointer;
+    text-align:left;
+    padding-left:30px;
+}
