@@ -13,6 +13,11 @@
             return View(header);
         }
 
+        public ActionResult Add()
+        {
+            return View();
+        }
+
         private Models.ClsTableHeaderModel GetTableHeader()
         {
             return new Models.ClsTableHeaderModel();

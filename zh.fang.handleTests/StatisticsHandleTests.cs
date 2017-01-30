@@ -212,17 +212,17 @@ namespace zh.fang.handle.Tests
             //    Assert.IsTrue(totalHandler.Add(total));
             //}
 
-            foreach (var cls in clsItems)
-            {
-                var total = CreateTotal(org, cls);
-                Assert.IsTrue(totalHandler.Add(total));
-            }
+            //foreach (var cls in clsItems)
+            //{
+            //    var total = CreateTotal(org, cls);
+            //    Assert.IsTrue(totalHandler.Add(total));
+            //}
 
-            foreach (var cls in clsItems)
-            {
-                var total = CreateTotal(org, cls);
-                Assert.IsTrue(totalHandler.Add(total));
-            }
+            //foreach (var cls in clsItems)
+            //{
+            //    var total = CreateTotal(org, cls);
+            //    Assert.IsTrue(totalHandler.Add(total));
+            //}
 
             return org;
         }

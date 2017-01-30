@@ -109,13 +109,22 @@
             }
         }
 
-        /// <summary>
-        /// 分组织机构和类型统计指定当天的案件发生次数
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalOnToday()
+        public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalOnWeeks(int count)
         {
-            return OrgClassTotal(DateTime.Now.Date.ToUnixTime(), DateTime.Now.ToUnixTime());
+            var currentWeekStartTime = DateTime.Now.FirstDayCurrentweeek();
+            var offset = count * 7;
+            var startTime = currentWeekStartTime.AddDays(0 - offset);
+            var items = OrgClassTotal(startTime.ToUnixTime(), DateTime.Now.ToUnixTime());
+            items = items.Select(t =>
+            {
+                t.ClassesTotals = t.ClassesTotals.Select(x =>
+                {
+                    x.TotalCount = x.TotalCount / count;
+                    return x;
+                });
+                return t;
+            });
+            return items;
         }
 
         /// <summary>
@@ -195,6 +204,59 @@
             }
         }
 
+        /// <summary>
+        /// 分组织机构和类型统计指定当天的案件发生次数
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalOnToday()
+        {
+            return OrgClassTotalNonCls(DateTime.Now.Date.ToUnixTime(), DateTime.Now.ToUnixTime());
+        }
+
+        /// <summary>
+        /// 分组织机构和类型统计指定时间段内的案件发生次数，无统计下一级组织机构
+        /// </summary>
+        /// <param name="timeToStart"></param>
+        /// <param name="timeToEnd"></param>
+        /// <returns></returns>
+        public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalNonCls(long timeToStart, long timeToEnd)
+        {
+            var tuple = CompareSwitchTimestamp(timeToStart, timeToEnd);
+            using (handle.Handle
+                orgHandler = new handle.OrgHandle(),
+                clsHandler = new handle.CaseClassesHandle(),
+                totalHandler = new handle.StatisticsHandle())
+            {
+                var clsItems = ((handle.CaseClassesHandle)clsHandler).FetchAll();
+                var orgItmes = ((handle.OrgHandle)orgHandler).FetchAll();
+                var totalItems = ((handle.StatisticsHandle)totalHandler).OrgClassesTotal(timeToStart, timeToEnd);
+                var items =
+                    from org in orgItmes
+                    join totals in totalItems on org.Id equals totals.OrgId into totalArr
+                    from total in totalArr.DefaultIfEmpty(new handle.Model.OrgClassesTotal
+                    {
+                        OrgId = org.Id,
+                        OrgName = org.Name,
+                        ParentId = org.ParentId,
+                        Order = org.Code.Length,
+                        ClassesTotals = new handle.Model.ClassesTotal[0]
+                    })
+                    orderby total.Order descending
+                    select total;
+                // 取类型统计和类型的并集，确保每一个组织机构都有所有有效的类型
+                var result = new List<handle.Model.OrgClassesTotal>();
+                foreach (var item in items)
+                {
+                    var arr = new List<handle.Model.ClassesTotal>();
+                    arr.AddRange(item.ClassesTotals);
+                    item.ClassesTotals = UnionClsTotal(arr, clsItems);
+                    result.Add(item);
+                }
+
+                return result;
+            }
+        }
+
         // 取指定类型统计和指定类型的并集，并返回新的类型统计信息
         private IEnumerable<handle.Model.ClassesTotal> UnionClsTotal(IEnumerable<handle.Model.ClassesTotal> totalItems, IEnumerable<data.entity.CaseClasses> clsItems)
         {
@@ -220,7 +282,7 @@
                 })
                 select total;
         }
-        
+
         // 取空类型统计和指定类型的并集
         private IEnumerable<handle.Model.ClassesTotal> GetEmptyTotal(IEnumerable<data.entity.CaseClasses> clsItems)
         {
@@ -237,6 +299,42 @@
             }
 
             return (new common.Exchange.Int64Exchange()).ExchangeByPlus(timestamp1, timestamp2);
+        }
+
+        public bool UpgradeTotals(params handle.Model.OrgClsTotal[] totals)
+        {            
+            using (var handler = new handle.StatisticsHandle())
+            {
+                foreach (var item in totals)
+                {
+                    UpgradeTotal(item.orgId, item.clsId, item.count, item.totalTime, handler);
+                }
+                return handler.Commit();
+            }
+        }
+
+        private bool UpgradeTotal(string orgId, string clsId, int count, DateTime upgradeTime, handle.StatisticsHandle handler)
+        {
+            var totalTime = upgradeTime.ToUnixTime();
+            var data = handler.First(orgId, clsId, upgradeTime);
+            if (data != null)
+            {
+                if (count != data.CaseCount)
+                {
+                    data.CaseCount = count;
+                    data.TotalDate = totalTime;
+                }
+                return handler.Update(data, false);
+            }
+
+            data = new data.entity.CaseClassesStatistics
+            {
+                CaseCount = count,
+                ClassesId = clsId,
+                OrgId = orgId,
+                TotalDate = totalTime
+            };
+            return handler.Add(data, false);
         }
     }
 }

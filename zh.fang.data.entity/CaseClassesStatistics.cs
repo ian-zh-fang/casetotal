@@ -1,5 +1,8 @@
 ﻿namespace zh.fang.data.entity
 {
+    using System;
+    using common;
+
     /// <summary>
     /// 区域分类案件统计
     /// </summary>
@@ -18,11 +21,11 @@
         /// <summary>
         /// 案发数量
         /// </summary>
-        public int CaseCount { get; set; }
+        public int CaseCount { get; set; } = 0;
 
         /// <summary>
         /// 统计时间
         /// </summary>
-        public long TotalDate { get; set; }
+        public long TotalDate { get; set; } = DateTime.Now.ToUnixTime();
     }
 }

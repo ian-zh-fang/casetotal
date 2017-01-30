@@ -27,12 +27,17 @@
         /// <returns></returns>
         public static DateTime FirstDayCurrentweeek(this DateTime time, DayOfWeek seek = DayOfWeek.Monday)
         {
+            if (seek == time.DayOfWeek)
+            {
+                return time.Date;
+            }
+
             var offset = (int)time.DayOfWeek;
             if (offset == 0)
             {
                 offset = 7;
             }
-            return time.AddDays((int)seek - offset);
+            return time.AddDays((int)seek - offset).Date;
         }
 
         /// <summary>

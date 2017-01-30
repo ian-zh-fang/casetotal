@@ -32,7 +32,7 @@
     <a href="javascript:void(0)" onclick="operClick();return false;" class="easyui-linkbutton" style="min-width:60px;">添&nbsp;&nbsp;加</a>
 </div>
 <div style="margin-top:10px;">
-    <table class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
+    <table id="x-tg" class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
            data-options="
             url: '@Url.Action("GetData")',
             method: 'get',

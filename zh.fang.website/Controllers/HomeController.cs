@@ -1,6 +1,5 @@
 ﻿namespace zh.fang.website.Controllers
 {
-    using System;
     using System.Linq;
     using System.Web.Mvc;
     using Newtonsoft.Json.Linq;
@@ -26,7 +25,16 @@
         [HttpGet]
         public override JObject GetData()
         {
-            return base.GetData();
+            var module = new module.StatisticsModule();
+            var header = GetTableHeader();
+            var model = new Models.OrgClsTotalModel();
+            var items = module.OrgClassTotalOnWeeks(6).Select(t => model.GetData(t, header)).ToArray();
+            var data = new JArray(items);
+            var json = new JObject();
+            json["total"] = items.Count();
+            json["rows"] = data;
+            json["footer"] = new JArray();
+            return json;
         }
 
         [HttpGet]

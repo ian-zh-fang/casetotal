@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using Newtonsoft.Json.Linq;
+    using System.Web.Http;
 
     public class PrewarnController : Controller
     {
@@ -34,7 +35,7 @@
             return model;
         }
         
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public virtual JObject GetData()
         {
             var module = new module.StatisticsModule();
@@ -47,6 +48,21 @@
             json["rows"] = data;
             json["footer"] = new JArray();
             return json;
+        }
+        
+
+        [System.Web.Mvc.HttpPost]
+        public JsonResult Upgrade([FromBody]Models.OrgClsTotalSubmitModel changes)
+        {
+            var module = new module.StatisticsModule();
+            var totals = changes.items.Select(t => new handle.Model.OrgClsTotal { clsId = t.id, count = t.value, orgId = changes.id }).ToArray();
+            var data = module.UpgradeTotals(totals);
+            int code = -1;
+            if (data)
+            {
+                code = 0;
+            }
+            return Json(new { data = data, code = code, msg = "Ok" });
         }
     }
 }

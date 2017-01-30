@@ -1,7 +1,9 @@
 ﻿namespace zh.fang.handle
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using zh.fang.common;
 
     /// <summary>
     /// 统计相关处理
@@ -71,6 +73,13 @@
                     })
                 });
             return items;
+        }
+
+        public data.entity.CaseClassesStatistics First(string orgId, string clsId, DateTime recordTime)
+        {
+            var today = recordTime.Date.ToUnixTime();
+            return
+                Repository.Query<data.entity.CaseClassesStatistics>(t => t.ClassesId == clsId && t.OrgId == orgId && t.TotalDate >= today).FirstOrDefault();
         }
     }
 }

@@ -159,7 +159,17 @@
         });
     </script>
 }
+<script type="text/javascript">
 
+        var fmtTotal = function (val, row) {
+            return '<div style="background-color:darkblue; color:white;">' + val + '</div>';
+        };
+
+        var fmtSum = function (val, row) {
+            return '<div style="background-color:darkgreen; color:white;">' + val + '</div>';
+        };
+      
+</script>
 <div class="x-clear-border x-clear">
     <div class="x-index-chart-left x-clear-border">
         <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #95B8E7; min-height:500px; "></div>
@@ -184,7 +194,7 @@
         <thead>
             <tr>
                 <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
-                <th data-options="field:'@Model.total.field',align:'center',width:1" rowspan="2">@Model.total.title</th>
+                <th data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Model.total.title</th>
                 @foreach (var item in Model.items)
                 {
                     if (0 == item.items.Length)
@@ -200,7 +210,7 @@
                 {
                     if (0 < item.items.Count())
                     {
-                        <th data-options="field:'@item.field',align:'center',width:1">小计</th>
+                        <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">小计</th>
                         foreach (var cell in item.items)
                         {
                             <th data-options="field:'@cell.field',align:'center',width:1">@Html.Raw(cell.title)</th>

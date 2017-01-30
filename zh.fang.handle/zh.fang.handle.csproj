@@ -44,11 +44,16 @@
     <Compile Include="Handle.cs" />
     <Compile Include="Model\Classes.cs" />
     <Compile Include="Model\ClassesTotal.cs" />
+    <Compile Include="Model\OrgClsTotal.cs" />
     <Compile Include="OrgHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatisticsHandle.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\zh.fang.common\zh.fang.common.csproj">
+      <Project>{071eb8c8-92ed-416c-9455-cc897483ffbf}</Project>
+      <Name>zh.fang.common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\zh.fang.data.entity\zh.fang.data.entity.csproj">
       <Project>{123d7b2b-5101-4eaa-b928-bc839b5dfda3}</Project>
       <Name>zh.fang.data.entity</Name>

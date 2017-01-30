@@ -24,24 +24,41 @@ namespace zh.fang.handle
             _rep = repository;
         }
 
-        public virtual bool Add<TModel>(TModel entity)
+        public virtual bool Add<TModel>(TModel entity, bool autoCommit = true)
             where TModel :data.entity.BaseEntity, new()
         {
             Repository.Add(entity);
-            return 0 < Repository.Commit();
+            if (autoCommit)
+            {
+                return 0 < Repository.Commit();
+            }
+            return true;
         }
 
-        public virtual bool Update<TModel>(TModel entity)
+        public virtual bool Update<TModel>(TModel entity, bool autoCommit = true)
             where TModel:data.entity.BaseEntity, new()
         {
             Repository.Update(entity);
-            return 0 < Repository.Commit();
+            if (autoCommit)
+            {
+                return 0 < Repository.Commit();
+            }
+            return true;
         }
 
-        public virtual bool Remove<TModel>(Expression<Func<TModel, bool>> predicate = null)
+        public virtual bool Remove<TModel>(Expression<Func<TModel, bool>> predicate = null, bool autoCommit = true)
             where TModel:data.entity.BaseEntity,new()
         {
             Repository.RemoveAny(predicate);
+            if (autoCommit)
+            {
+                return 0 < Repository.Commit();
+            }
+            return true;
+        }
+
+        public bool Commit()
+        {
             return 0 < Repository.Commit();
         }
 

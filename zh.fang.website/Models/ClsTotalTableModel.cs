@@ -58,6 +58,7 @@ namespace zh.fang.website.Models
             var result = new JObject();
             var hashId = data.OrgId.GetHashCode();
             result[header.id.field] = hashId;
+            result[header.rawId.field] = data.OrgId;
             if (!string.IsNullOrWhiteSpace(data.ParentId))
             {
                 result[header.parentId.field] = data.ParentId.GetHashCode();
@@ -78,13 +79,7 @@ namespace zh.fang.website.Models
                 foreach (var cell in item.items)
                 {
                     clsval = data.ClassesTotals.FirstOrDefault(t => t.ClassId == cell.field);
-                    val = 0;
-                    if (null != clsval)
-                    {
-                        val = clsval.TotalCount;
-                    }
                     result[cell.field] = clsval.TotalCount;
-                    total += val;
                 }
             }
             result[header.total.field] = total;

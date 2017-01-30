@@ -11,7 +11,7 @@
         /// 主键
         /// </summary>
         [Key]
-        public string Id { get; set; }
+        public string Id { get; set; } = common.Utility.GuidToString16();
     }
 
     /// <summary>

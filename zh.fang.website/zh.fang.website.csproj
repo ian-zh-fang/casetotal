@@ -941,6 +941,7 @@
     <Compile Include="Models\ChartModel.cs" />
     <Compile Include="Models\ClassesModel.cs" />
     <Compile Include="Models\ClsTotalTableModel.cs" />
+    <Compile Include="Models\OrgClsTotalSubmitModel.cs" />
     <Compile Include="Models\OrgModel.cs" />
     <Compile Include="Models\TableCellDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
