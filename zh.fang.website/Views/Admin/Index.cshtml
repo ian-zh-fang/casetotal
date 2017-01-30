@@ -13,13 +13,13 @@
             <li class="x-nav-bar-left" onclick="navClickCallback('@Url.Action("index", "org")');">                
                 <a href="@Url.Action("index", "org")" onclick="return false;">{ 组织机构管理 }</a>
             </li>
-            <li class="x-nav-bar-left" onclick="navClickCallback('@Url.Action("index", "Prewarm")');">
-                <a href="@Url.Action("index", "Prewarm")" onclick="return false;">{ 预警信息管理 }</a>
+            <li class="x-nav-bar-left" onclick="navClickCallback('@Url.Action("index", "Prewarn")');">
+                <a href="@Url.Action("index", "Prewarn")" onclick="return false;">{ 预警信息管理 }</a>
             </li>
         </ul>
     </div>
     <div id="x-main-center" data-options="region:'center'" title="" class="x-clear-border" style="">
-        <iframe id="x-main-frame" class="x-clear-border" src="@Url.Action("index", "cls")" style="width:98%; height:98%;"></iframe>
+        <iframe id="x-main-frame" class="x-clear-border" src="@Url.Action("index", "Prewarn")" style="width:98%; height:98%;"></iframe>
     </div>
 </div>
 

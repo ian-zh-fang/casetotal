@@ -5,33 +5,17 @@
     using System.Web.Mvc;
     using Newtonsoft.Json.Linq;
 
-    public class HomeController : Controller
+    public class HomeController : PrewarnController
     {
-        public ActionResult Index()
+        public override ActionResult Index()
         {
             var model = GetTableHeader();
             return View(model);
         }
 
-        private Models.ClsTotalTableHeaderModel GetTableHeader()
+        protected override Models.ClsTotalTableHeaderModel GetTableHeader()
         {
-            var clsModule = new module.ClassesModule();
-            var clsItems = clsModule.FetchAll();
-            var model = new Models.ClsTotalTableHeaderModel
-            {
-                items = clsItems.Where(t => t.ParentId == null).Select(t => new Models.ClsTotalTableCellModel
-                {
-                    field = t.Id,
-                    title = t.Name,
-                    items = clsItems.Where(x => x.ParentId == t.Id).Select(x => new Models.ClsTotalTableCellModel
-                    {
-                        field = x.Id,
-                        title = x.Name,
-                        items = new Models.ClsTotalTableCellModel[0]
-                    }).ToArray()
-                }).ToArray()
-            };
-            return model;
+            return base.GetTableHeader();
         }
 
         public ActionResult Admin()
@@ -40,18 +24,9 @@
         }
 
         [HttpGet]
-        public JObject GetData()
+        public override JObject GetData()
         {
-            var module = new module.StatisticsModule();
-            var header = GetTableHeader();
-            var model = new Models.OrgClsTotalModel();
-            var items = module.OrgClassTotalOnToday().Select(t => model.GetData(t, header)).ToArray();
-            var data = new JArray(items);
-            var json = new JObject();
-            json["total"] = items.Count();
-            json["rows"] = data;
-            json["footer"] = new JArray();
-            return json;
+            return base.GetData();
         }
 
         [HttpGet]

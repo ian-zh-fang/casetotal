@@ -201,10 +201,10 @@ namespace zh.fang.handle.Tests
             var org = CreateOrg(name, parent);
             Assert.IsTrue(orgHandler.Add(org));
 
-            if (parent == null)
-            {
-                return org;
-            }
+            //if (parent == null)
+            //{
+            //    return org;
+            //}
 
             //foreach (var cls in clsItems)
             //{
@@ -214,20 +214,14 @@ namespace zh.fang.handle.Tests
 
             foreach (var cls in clsItems)
             {
-                if (cls.ParentId != null)
-                {
-                    var total = CreateTotal(org, cls);
-                    Assert.IsTrue(totalHandler.Add(total));
-                }                
+                var total = CreateTotal(org, cls);
+                Assert.IsTrue(totalHandler.Add(total));
             }
 
             foreach (var cls in clsItems)
             {
-                if (cls.ParentId != null)
-                {
-                    var total = CreateTotal(org, cls);
-                    Assert.IsTrue(totalHandler.Add(total));
-                }
+                var total = CreateTotal(org, cls);
+                Assert.IsTrue(totalHandler.Add(total));
             }
 
             return org;
@@ -265,12 +259,6 @@ namespace zh.fang.handle.Tests
             Assert.IsTrue(clsHandler.Add(scls));
             items.Add(scls);
 
-            scls = CreateCls("其它");
-            scls.ParentId = cls.Id;
-            scls.Code = $"{cls.Code}{scls.Code}";
-            Assert.IsTrue(clsHandler.Add(scls));
-            items.Add(scls);
-
             // ====================================================
 
             cls = CreateCls("治安");
@@ -289,9 +277,21 @@ namespace zh.fang.handle.Tests
             Assert.IsTrue(clsHandler.Add(scls));
             items.Add(scls);
 
-            scls = CreateCls("其它");
-            scls.ParentId = cls.Id;
-            scls.Code = $"{cls.Code}{scls.Code}";
+            // ================================================
+
+            scls = CreateCls("交通");
+            Assert.IsTrue(clsHandler.Add(scls));
+            items.Add(scls);
+
+            // ================================================
+
+            scls = CreateCls("火灾");
+            Assert.IsTrue(clsHandler.Add(scls));
+            items.Add(scls);
+
+            // ================================================
+
+            scls = CreateCls("群众求助");
             Assert.IsTrue(clsHandler.Add(scls));
             items.Add(scls);
 
@@ -300,30 +300,6 @@ namespace zh.fang.handle.Tests
             cls = CreateCls("其它");
             Assert.IsTrue(clsHandler.Add(cls));
             items.Add(cls);
-
-            scls = CreateCls("交通");
-            scls.ParentId = cls.Id;
-            scls.Code = $"{cls.Code}{scls.Code}";
-            Assert.IsTrue(clsHandler.Add(scls));
-            items.Add(scls);
-
-            scls = CreateCls("火灾");
-            scls.ParentId = cls.Id;
-            scls.Code = $"{cls.Code}{scls.Code}";
-            Assert.IsTrue(clsHandler.Add(scls));
-            items.Add(scls);
-
-            scls = CreateCls("群众求助");
-            scls.ParentId = cls.Id;
-            scls.Code = $"{cls.Code}{scls.Code}";
-            Assert.IsTrue(clsHandler.Add(scls));
-            items.Add(scls);
-
-            scls = CreateCls("其它");
-            scls.ParentId = cls.Id;
-            scls.Code = $"{cls.Code}{scls.Code}";
-            Assert.IsTrue(clsHandler.Add(scls));
-            items.Add(scls);
 
             return items;
         }

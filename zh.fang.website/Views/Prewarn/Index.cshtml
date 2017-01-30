@@ -1,0 +1,60 @@
+﻿@model zh.fang.website.Models.ClsTotalTableHeaderModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutFrame.cshtml";
+}
+<script type="text/javascript">
+    var operClick = function (val, url) {
+        var r = 0;
+        if (val) {
+            r = val;
+        }
+        alert(r);
+    };
+
+    var fmtOper = function (val, row) {
+        return '<a href="javascript:void(0)" onclick="operClick(\'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>';
+    };
+</script>
+<div style="margin-top:15px;">
+    <table class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
+           data-options="
+            url: '@Url.Action("GetData")',
+            method: 'get',
+            rownumbers: true,
+            showFooter: true,
+            fitColumns: true,
+            idField: 'id',
+            treeField: '@Model.company.field'
+           ">
+        <thead>
+            <tr>
+                <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
+                <th data-options="field:'@Model.total.field',align:'center',width:1" rowspan="2">@Model.total.title</th>
+                @foreach (var item in Model.items)
+                {
+                    if (0 == item.items.Length)
+                    {
+                        <th data-options="field:'@item.field',align:'center',width:1" rowspan="2">@Html.Raw(item.title)</th>
+                        continue;
+                    }
+                    <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
+                }
+                <th data-options="field:'@Model.id.field',align:'left',width:1,formatter:fmtOper" rowspan="2"></th>
+            </tr>
+            <tr>
+                @foreach (var item in Model.items)
+                {
+                    if (0 < item.items.Count())
+                    {
+                        <th data-options="field:'@item.field',align:'center',width:1">小计</th>
+                        foreach (var cell in item.items)
+                        {
+                            <th data-options="field:'@cell.field',align:'center',width:1">@Html.Raw(cell.title)</th>
+                        }
+                    }
+                }
+            </tr>
+        </thead>
+    </table>
+</div>

@@ -6,12 +6,8 @@ namespace zh.fang.website.Models
     using Newtonsoft.Json.Linq;
     using zh.fang.handle.Model;
 
-    public class ClsTotalTableCellModel
+    public class ClsTotalTableCellModel: TableCellDataModel
     {
-        public string field { get; set; }
-
-        public string title { get; set; }
-
         public ClsTotalTableCellModel[] items { get; set; }
     }
 

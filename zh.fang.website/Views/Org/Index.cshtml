@@ -1,8 +1,50 @@
-﻿
+﻿@model zh.fang.website.Models.OrgTableHeaderModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutFrame.cshtml";
 }
 
-<h2>组织机构管理</h2>
+<script type="text/javascript">
+
+    var operClick = function (val, url) {
+        var r = 0;
+        if (val) {
+            r = val;
+        }
+        alert(r);
+    };
+
+    var fmtOper = function (val, row) {
+        return '<a href="javascript:void(0)" onclick="operClick(\'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加</a>\
+                <a href="javascript:void(0)" onclick="operClick(\'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>\
+                <a href="javascript:void(0)" onclick="operClick(\'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除</a>';
+    };
+
+</script>
+
+<div style="min-height:26px; margin-top:15px; margin-left:5px;">
+    <a href="javascript:void(0)" onclick="operClick();return false;" class="easyui-linkbutton" style="min-width:60px;">添&nbsp;&nbsp;加</a>
+</div>
+<div style="margin-top:10px;">
+    <table class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
+           data-options="
+            url: '@Url.Action("GetData")',
+            method: 'get',
+            rownumbers: true,
+            showFooter: true,
+            fitColumns: true,
+            idField: 'id',
+            treeField: '@Model.name.field'
+           ">
+        <thead>
+            <tr>
+                <th data-options="field:'@Model.name.field'">@Model.name.title</th>
+                <th data-options="field:'@Model.safety.field',align:'left',width:1">@Model.safety.title</th>
+                <th data-options="field:'@Model.warning.field',align:'left',width:1">@Model.warning.title</th>
+                <th data-options="field:'@Model.danger.field',align:'left',width:1">@Model.danger.title</th>
+                <th data-options="field:'@Model.id.field',align:'left',width:2,formatter:fmtOper"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
 

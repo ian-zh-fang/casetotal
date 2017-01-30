@@ -179,7 +179,7 @@
             showFooter: true,
             fitColumns: true,
             idField: 'id',
-            treeField: 'company'
+            treeField: '@Model.company.field'
            ">
         <thead>
             <tr>
@@ -198,10 +198,13 @@
             <tr>
                 @foreach (var item in Model.items)
                 {
-                    <th data-options="field:'@item.field',align:'center',width:1">小计</th>
-                    foreach (var cell in item.items)
+                    if (0 < item.items.Count())
                     {
-                        <th data-options="field:'@cell.field',align:'center',width:1">@Html.Raw(cell.title)</th>
+                        <th data-options="field:'@item.field',align:'center',width:1">小计</th>
+                        foreach (var cell in item.items)
+                        {
+                            <th data-options="field:'@cell.field',align:'center',width:1">@Html.Raw(cell.title)</th>
+                        }
                     }
                 }
             </tr>

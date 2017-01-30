@@ -934,12 +934,15 @@
     <Compile Include="Controllers\ClsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrgController.cs" />
-    <Compile Include="Controllers\PrewarmController.cs" />
+    <Compile Include="Controllers\PrewarnController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChartModel.cs" />
+    <Compile Include="Models\ClassesModel.cs" />
     <Compile Include="Models\ClsTotalTableModel.cs" />
+    <Compile Include="Models\OrgModel.cs" />
+    <Compile Include="Models\TableCellDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -983,7 +986,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutFrame.cshtml" />
     <Content Include="Views\Org\Index.cshtml" />
-    <Content Include="Views\Prewarm\Index.cshtml" />
+    <Content Include="Views\Prewarn\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
