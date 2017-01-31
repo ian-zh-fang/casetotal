@@ -12,5 +12,10 @@
         {
             return Repository.Query<data.entity.Orgnization>(t => NonDeletedStatus.Any(x => t.IsDel == x)).ToList();
         }
+
+        public data.entity.Orgnization FetchOne(string id)
+        {
+            return Repository.Query<data.entity.Orgnization>(t => t.Id == id).FirstOrDefault();
+        }
     }
 }

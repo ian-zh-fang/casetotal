@@ -5,25 +5,117 @@
 }
 
 <script type="text/javascript">
+    var xtg = function () { return $("#x-tg"); };
 
-    var operClick = function (val, url) {
-        var r = 0;
-        if (val) {
-            r = val;
+    var editCb = function (e, id) {
+        xtg().treegrid('beginEdit', id);
+        var row = $(e).closest('tr.datagrid-row');
+        var container = row.children().last().children().first();
+
+        var html = '<a href="javascript:void(0)" onclick="saveCb(this, \'' + id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">保存</a>\
+                    <a href="javascript:void(0)" onclick="cancelCb(this, \'' + id + '\');return false;" class="easyui-linkbutton" data-options="plain:true">取消</a>';
+        container.html(html);
+    };
+
+    var cancelCb = function (e, id) {
+        xtg().treegrid('cancelEdit', id);
+    };
+
+    var saveCb = function (e, id) {
+        $.messager.confirm('保存数据：', '是否保存 ?', function (r) {
+            if (!!r) {
+                var row = $(e).closest('tr.datagrid-row');
+                xtg().treegrid('endEdit', id);
+            }
+        });
+    };
+
+    var fmtAlert = function (val, row, index) {
+        if (val === -1 || val === '-1') {
+            return '<span style="padding: auto 10px auto 10px; corlor:red;" >未设定</span>';
         }
-        alert(r);
+        return "" + val;
+    };
+
+    var addClick = function (e, id, name) {
+        var pid = $('#parentId');
+        pid.combobox("disable");
+        pid.combotreegrid('setValue', id);
+        opendlg();
     };
 
     var fmtOper = function (val, row) {
-        return '<a href="javascript:void(0)" onclick="operClick(\'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加</a>\
-                <a href="javascript:void(0)" onclick="operClick(\'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>\
-                <a href="javascript:void(0)" onclick="operClick(\'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除</a>';
+        return '<a href="javascript:void(0)" onclick="addClick(this, \'' + val + '\', \'' + row.name + '\');return false;" class="easyui-linkbutton" data-options="plain:true">添加</a>\
+                <a href="javascript:void(0)" onclick="editCb(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">编辑</a>\
+                <a href="javascript:void(0)" onclick="delClick(this, \'' + val + '\');return false;" class="easyui-linkbutton" data-options="plain:true">删除</a>';
+    };
+
+    var afterEdit = function (row, changes) {
+        var data = { id: row.id, name: row.name, gVal: row.safety, yVal: row.warning, oVal: row.danger };
+        if (!!changes.name) {
+            data.name = changes.name;
+        }
+
+        if (!!changes.safety) {
+            data.gVal = changes.safety;
+        }
+
+        if (!!changes.warning) {
+            data.yVal = changes.warning;
+        }
+
+        if (!!changes.danger) {
+            data.oVal = changes.danger;
+        }
+        
+        $.post('@Url.Action("UpgOrg")', data, function (d) { });
+    };
+
+    var formsubmit = function () {
+
+        $('#parentId').combobox("enable");
+        $('#x-form').form('submit', {
+            url:'@Url.Action("AddOrg")',
+            success: function (data) {
+                closedlg();
+                reloadGrid();
+            }
+        });
+    };
+
+    var reloadGrid = function () {
+        $("#x-tg").treegrid('reload');
+    };
+
+    var addTopClick = function () {
+        var pid = $('#parentId');
+        pid.combobox("enable");
+        pid.combotreegrid('setValue', '');
+        opendlg();
+    };
+
+    var opendlg = function () {
+        $('#dlg').dialog('open');
+    };
+
+    var closedlg = function () {
+        $('#dlg').dialog('close');
+    };
+
+    var delClick = function (e, id) {
+        $.messager.confirm('删除：', '是否删除 ?', function (r) {
+            if (!!r) {
+                $.post('@Url.Action("DelOrg")', { id: id }, function (data) {
+                    reloadGrid();
+                });
+            }
+        });
     };
 
 </script>
 
 <div style="min-height:26px; margin-top:15px; margin-left:5px;">
-    <a href="javascript:void(0)" onclick="operClick();return false;" class="easyui-linkbutton" style="min-width:60px;">添&nbsp;&nbsp;加</a>
+    <a href="javascript:void(0)" onclick="addTopClick();return false;" class="easyui-linkbutton" style="min-width:60px;">添&nbsp;&nbsp;加</a>
 </div>
 <div style="margin-top:10px;">
     <table id="x-tg" class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
@@ -31,20 +123,58 @@
             url: '@Url.Action("GetData")',
             method: 'get',
             rownumbers: true,
-            showFooter: true,
             fitColumns: true,
+            showFooter: true,
+            collapsible: true,
+            animate: true,
             idField: 'id',
-            treeField: '@Model.name.field'
+            treeField: '@Model.name.field',
+            onAfterEdit:afterEdit
            ">
         <thead>
             <tr>
-                <th data-options="field:'@Model.name.field'">@Model.name.title</th>
-                <th data-options="field:'@Model.safety.field',align:'left',width:1">@Model.safety.title</th>
-                <th data-options="field:'@Model.warning.field',align:'left',width:1">@Model.warning.title</th>
-                <th data-options="field:'@Model.danger.field',align:'left',width:1">@Model.danger.title</th>
+                <th data-options="field:'@Model.name.field',editor:'text'">@Model.name.title</th>
+                <th data-options="field:'@Model.safety.field',align:'left',width:1,editor:'numberbox'">@Model.safety.title</th>
+                <th data-options="field:'@Model.warning.field',align:'left',width:1,editor:'numberbox'">@Model.warning.title</th>
+                <th data-options="field:'@Model.danger.field',align:'left',width:1,editor:'numberbox'">@Model.danger.title</th>
                 <th data-options="field:'@Model.id.field',align:'left',width:2,formatter:fmtOper"></th>
             </tr>
         </thead>
     </table>
 </div>
-
+<div id="dlg" class="easyui-dialog" style="width:500px;height:320px;padding:10px 30px;" data-options="modal:true,closed:true" title="添加类型：" buttons="#dlg-buttons">
+    <form id="x-form" method="post">
+        <div class="x-form-row">
+            <input id="name" name="name" class="easyui-textbox" data-options="prompt:'请输入组织机构名称 ...',required:true" style="width:100%;height:26px" />
+        </div>
+        <div class="x-form-row">
+            <input id="parentId" name="parentId" style="width:100%;height:26px" class="easyui-combotreegrid"
+                   data-options="
+                    rownumbers: true,
+                    fitColumns: true,
+                    collapsible: true,
+                    lines: true,
+                    url:'@Url.Action("GetData")',
+                    method: 'get',
+                    idField:'@Model.id.field',
+                    treeField:'@Model.name.field',
+                    prompt:'请选择上一级组织机构 ...',
+                    columns:[[
+                        {field:'@Model.name.field',title:'@Model.name.title', width:1}
+                    ]]" />
+        </div>
+        <div class="x-form-row">
+            <input id="gVal" name="gVal" value="0" class="easyui-numberbox" data-options="prompt:'请输入黄色预警最小值 ...',required:true" style="width:50%;height:26px" />
+        </div>
+        <div class="x-form-row">
+            <input id="yVal" name="yVal" value="0" class="easyui-numberbox" data-options="prompt:'请输入橘色预警最小值 ...',required:true" style="width:50%;height:26px" />
+        </div>
+        <div class="x-form-row">
+            <input id="oVal" name="oVal" value="0" class="easyui-numberbox" data-options="prompt:'请输入红色预警最小值 ...',required:true" style="width:50%;height:26px" />
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok" onclick="formsubmit(); return false;">提&nbsp;交</a>
+    <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closedlg(); return false;">取&nbsp;消</a>
+</div>

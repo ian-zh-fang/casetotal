@@ -70,10 +70,10 @@
         $('#x-form').form('submit', {
             url:'@Url.Action("AddCls")',
             success: function (data) {
+                closedlg();
                 reloadGrid();
             }
         });
-        closedlg();
     };
 
     var reloadGrid = function () {
@@ -144,11 +144,11 @@
                     fitColumns: true,
                     collapsible: true,
                     lines: true,
-                    url:'@Url.Action("GetData", "cls")',
+                    url:'@Url.Action("GetData")',
                     method: 'get',
                     idField:'@Model.id.field',
                     treeField:'@Model.name.field',
-                    prompt:'请输入类型名称 ...',
+                    prompt:'请选择上一级类型 ...',
                     columns:[[
                         {field:'@Model.name.field',title:'@Model.name.title', width:1}
                     ]]" />

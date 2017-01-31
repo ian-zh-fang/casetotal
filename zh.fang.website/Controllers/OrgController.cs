@@ -31,5 +31,29 @@
             json["footer"] = new JArray();
             return json;
         }
+
+        [HttpPost]
+        public JsonResult AddOrg(string name, string parentId, short gVal, short yVal, short oVal)
+        {
+            var module = new module.OrgModule();
+            var data = module.AddOrg(name, parentId, gVal, yVal, oVal);
+            return Json(new { data = data, code = 0, msg = "Ok" });
+        }
+
+        [HttpPost]
+        public JsonResult UpgOrg(string id, string name, short gVal, short yVal, short oVal)
+        {
+            var module = new module.OrgModule();
+            var data = module.UpgOrg(id, name, gVal, yVal, oVal);
+            return Json(new { data = data, code = 0, msg = "Ok" });
+        }
+
+        [HttpPost]
+        public JsonResult DelOrg(string id)
+        {
+            var module = new module.OrgModule();
+            var data = module.DelOrg(id);
+            return Json(new { data = data, code = 0, msg = "Ok" });
+        }
     }
 }
