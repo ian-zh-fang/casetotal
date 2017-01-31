@@ -13,11 +13,6 @@
             return View(header);
         }
 
-        public ActionResult Add()
-        {
-            return View();
-        }
-
         private Models.ClsTableHeaderModel GetTableHeader()
         {
             return new Models.ClsTableHeaderModel();
@@ -36,6 +31,30 @@
             json["rows"] = data;
             json["footer"] = new JArray();
             return json;
+        }
+
+        [HttpPost]
+        public JsonResult AddCls(string name, string parentId, int alertVal)
+        {
+            var module = new module.ClassesModule();
+            var data = module.AddCls(name, parentId, alertVal);
+            return Json(new { data = data, code = 0, msg = "Ok" });
+        }
+
+        [HttpPost]
+        public JsonResult DelCls(string id)
+        {
+            var module = new module.ClassesModule();
+            var data = module.DelCls(id);
+            return Json(new { data = data, code = 0, msg = "Ok" });
+        }
+
+        [HttpPost]
+        public JsonResult UpgCls(string id, string name, int alertVal)
+        {
+            var module = new module.ClassesModule();
+            var data = module.UpgCls(id, name, alertVal);
+            return Json(new { data = data, code = 0, msg = "Ok" });
         }
     }
 }

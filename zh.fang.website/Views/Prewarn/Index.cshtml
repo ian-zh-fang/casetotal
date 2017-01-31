@@ -36,7 +36,6 @@
     };
 
     var afterEdit = function (row, changes) {
-        debugger;
         var data = { id: row.rawId, items: [] };
         for (var item in changes)
         {
@@ -71,7 +70,6 @@
             showFooter: true,
             collapsible: true,
             animate: true,
-            lines:true,
             idField: 'id',
             treeField: '@Model.company.field',
             onAfterEdit:afterEdit
@@ -105,17 +103,3 @@
         </thead>
     </table>
 </div>
-
-@section scripts{
-    <script type="text/javascript">
-        $.extend($.fn.datagrid.methods, {
-            editCell: function (jq, param) {
-                return jq.each(function () {
-                    debugger;
-                    var opts = $(this).treegrid('options');
-                    var fields = $(this).treegrid('getColumnFields', true).concat($(this).datagrid('getColumnFields'));
-                });
-            }
-        });
-    </script>
-}
