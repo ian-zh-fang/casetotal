@@ -46,9 +46,9 @@
             if ( usr != null && !string.IsNullOrWhiteSpace(cfmpwd) && newpwd == cfmpwd)
             {
                 var module = new module.UserModule();
-                data = module.UpgPasswd(usr.Id, oldpwd, newpwd);
+                data = module.UpgPasswd(usr.Account, oldpwd, newpwd);
             }
-            return Json(new { data = data, code = code, msg = "Ok" });
+            return Json(new { data = data, code = code, msg = "Ok", url= "/admin/Signout" });
         }
 
         [Filters.AuthFilter()]

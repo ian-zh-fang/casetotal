@@ -4,27 +4,38 @@
     Layout = "~/Views/Shared/_LayoutFrame.cshtml";
 }
 
-<div class="x-clear-border" style="text-align:center;max-width:400px;">
-    <div class="easyui-panel x-clear-border">
-        <form id="form-login" method="post" action="@Url.Action("ChangePasswd")">
-            <table class="x-clear-border">
-                <tr>
-                    <td>旧密码：</td>
-                    <td><input type="password" class="easyui-textbox" id="oldpwd" name="oldpwd" data-options="required:true" /></td>
-                </tr>
-                <tr>
-                    <td>新密码：</td>
-                    <td><input type="password" class="easyui-textbox" id="newpwd" name="newpwd" data-options="required:true" /></td>
-                </tr>
-                <tr>
-                    <td>确认新密码：</td>
-                    <td><input type="password" class="easyui-textbox" id="cfmpwd" name="cfmpwd" data-options="required:true" /></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" class="easyui-linkbutton" value="修&nbsp;&nbsp;&nbsp;&nbsp;改" style="min-height:26px; min-width:80px;" /></td>
-                </tr>
-            </table>
-        </form>
-    </div>
+
+<div class="easyui-panel" title="" style="width:400px;padding:30px 70px 20px 70px; border-width:0px;">
+    <form id="x-form" method="post" action="@Url.Action("ChangePasswd")">
+        <div style="margin-bottom:10px">
+            <input id="oldpwd" name="oldpwd" class="easyui-textbox" type="password" style="width:100%;height:40px;padding:12px" data-options="prompt:'请输入旧密码 ...',iconCls:'icon-lock',iconWidth:38,required:true">
+        </div>
+        <div style="margin-bottom:20px">
+            <input id="newpwd" name="newpwd" class="easyui-textbox" type="password" style="width:100%;height:40px;padding:12px" data-options="prompt:'请输入新密码 ...',iconCls:'icon-lock',iconWidth:38,required:true">
+        </div>
+        <div style="margin-bottom:20px">
+            <input id="cfmpwd" name="cfmpwd" class="easyui-textbox" type="password" style="width:100%;height:40px;padding:12px" data-options="prompt:'请输入确认新密码 ...',iconCls:'icon-lock',iconWidth:38,required:true">
+        </div>
+        <div>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="formSubmit();return false;" style="padding:5px 0px;width:100%;">
+                <span style="font-size:14px;">修&nbsp;&nbsp;&nbsp;&nbsp;改</span>
+            </a>
+        </div>
+    </form>
 </div>
+<script type="text/javascript">
+    var formSubmit = function () {
+        $('#x-form').form('submit', {
+            success: function (data) {
+                data = JSON.parse(data);
+                if (!!data.data) {
+                    //location.href = data.url;
+                    window.parent.document.location.href = data.url;
+                }
+                else {
+                    $.messager.alert('提示', '错误，修改失败 !!', 'info');
+                }
+            }
+        });
+    };
+</script>
