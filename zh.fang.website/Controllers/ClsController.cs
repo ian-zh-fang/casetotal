@@ -7,6 +7,7 @@
     public class ClsController : Controller
     {
         // GET: Cls
+        [Filters.AuthFilter()]
         public ActionResult Index()
         {
             var header = GetTableHeader();

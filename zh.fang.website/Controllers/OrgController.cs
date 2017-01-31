@@ -7,6 +7,7 @@
     public class OrgController : Controller
     {
         // GET: Org
+        [Filters.AuthFilter()]
         public ActionResult Index()
         {
             var header = GetTableHeader();

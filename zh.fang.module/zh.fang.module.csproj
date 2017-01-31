@@ -44,6 +44,7 @@
     <Compile Include="OrgModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatisticsModule.cs" />
+    <Compile Include="UserModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\zh.fang.common\zh.fang.common.csproj">
