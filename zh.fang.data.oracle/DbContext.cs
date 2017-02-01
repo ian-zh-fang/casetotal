@@ -23,6 +23,7 @@ namespace zh.fang.data.oracle
             modelBuilder.Entity<entity.Orgnization>().ToTable("tb_Orgnization");
             modelBuilder.Entity<entity.Role>().ToTable("tb_Role");
             modelBuilder.Entity<entity.User>().ToTable("tb_User");
+            modelBuilder.Entity<entity.Config>().ToTable("tb_Config");
         }
 
         public virtual DbSet<entity.Auth> AuthentizationItems { get; set; }
@@ -38,5 +39,7 @@ namespace zh.fang.data.oracle
         public virtual DbSet<entity.Role> RoleItems { get; set; }
 
         public virtual DbSet<entity.User> UserItems { get; set; }
+
+        public virtual DbSet<entity.Config> Configs { get; set; }
     }
 }

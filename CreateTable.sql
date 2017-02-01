@@ -18,6 +18,8 @@ drop table "tb_Role" cascade constraints;
 
 drop table "tb_User" cascade constraints;
 
+drop table "tb_Config" cascade constraints;
+
 /*==============================================================*/
 /* Table: "tb_Auth"                                             */
 /*==============================================================*/
@@ -259,3 +261,33 @@ comment on column "tb_User"."Status" is
 
 comment on column "tb_User"."Avatar" is
 '头像地址';
+
+/*==============================================================*/
+/* Table: "tb_Config"                                      */
+/*==============================================================*/
+create table "tb_Config" 
+(
+   "Id"                 varchar(32)          not null,
+   "IsDel"              smallint             not null,
+   "Name"               varchar(128)         not null,
+   "Type"               smallint			 not null,
+   "Data"               varchar(1024)        not null,
+   constraint PK_TB_CONFIG primary key ("Id")
+);
+comment on table "tb_Config" is
+'系统配置';
+
+comment on column "tb_Config"."Id" is
+'主键';
+
+comment on column "tb_Config"."IsDel" is
+'0：未删除；1：已删除';
+
+comment on column "tb_Config"."Name" is
+'名称';
+
+comment on column "tb_Config"."Type" is
+'类型。1：说明文本；2：';
+
+comment on column "tb_Config"."Data" is
+'内容';

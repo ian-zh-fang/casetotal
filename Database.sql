@@ -24,3 +24,20 @@
     0, -- "Status"
     '0000000000000000' -- "Avatar"
   );
+
+  INSERT INTO "tb_Config"
+  (
+    "Id",
+    "IsDel",
+    "Name",
+    "Type",
+    "Data"
+  )
+  VALUES
+  (
+    '5af390dc3b3128f', -- "Id"
+    0, -- "IsDel"
+    '首页表格提示文本', -- "Name"
+    1, -- "Type"
+    '首页表格提示文本' -- "Data"
+  );

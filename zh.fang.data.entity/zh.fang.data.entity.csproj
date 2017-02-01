@@ -45,6 +45,7 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="CaseClasses.cs" />
     <Compile Include="CaseClassesStatistics.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="EntityTree.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Orgnization.cs" />

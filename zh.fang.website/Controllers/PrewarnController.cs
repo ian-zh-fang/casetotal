@@ -11,6 +11,10 @@
         //[Filters.AuthFilter()]
         public virtual ActionResult Index()
         {
+            var module = new module.ConfigModule();
+            var title = module.FetchHomeTitle()?.Data;
+            ViewBag.HomeTitle = title;
+
             var header = GetTableHeader();
             return View(header);
         }
@@ -64,6 +68,19 @@
                 code = 0;
             }
             return Json(new { data = data, code = code, msg = "Ok" });
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public JsonResult UpgradeTite([FromBody]string title)
+        {
+            var data = false;
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                var module = new module.ConfigModule();
+                data = module.ChangeHomeTitle(title);
+            }
+            
+            return Json(new { data = data, code = 0, msg = "Ok" });
         }
     }
 }

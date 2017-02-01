@@ -8,6 +8,10 @@
     {
         public override ActionResult Index()
         {
+            var module = new module.ConfigModule();
+            var title = module.FetchHomeTitle()?.Data;
+            ViewBag.HomeTitle = title;
+
             var model = GetTableHeader();
             return View(model);
         }
