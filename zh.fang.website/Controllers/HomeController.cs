@@ -9,8 +9,8 @@
         public override ActionResult Index()
         {
             var module = new module.ConfigModule();
-            var title = module.FetchHomeTitle()?.Data;
-            ViewBag.HomeTitle = title;
+            var title = module.FetchHomeTitle()?.Data ?? "";
+            ViewBag.HomeTitle = title.Replace("\r\n", "<br />");
 
             var model = GetTableHeader();
             return View(model);

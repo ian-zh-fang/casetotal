@@ -208,8 +208,12 @@
     </div>
 </div>
 
-<div style="margin-top:20px;">
-    <table class="easyui-treegrid" title="@ViewBag.HomeTitle" style="width:100%;min-height:150px;"
+<div class="easyui-panel" title="" style="width:100%;padding:10px;">
+    @Html.Raw(ViewBag.HomeTitle);
+</div>
+
+<div style="margin-top:10px;">
+    <table class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
            data-options="
             url: '@Url.Action("GetData")',
             method: 'get',
