@@ -17,6 +17,12 @@
 
         public string OrgName { get; set; }
 
+        public short GVal { get; set; }
+
+        public short YVal { get; set; }
+
+        public short OVal { get; set; }
+
         public string ParentId { get; set; }
 
         /// <summary>

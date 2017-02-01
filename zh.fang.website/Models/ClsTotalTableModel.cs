@@ -38,6 +38,21 @@ namespace zh.fang.website.Models
             get { return new ClsTotalTableCellModel { field = "total", title = "合计", items = new ClsTotalTableCellModel[0] }; }
         }
 
+        public ClsTotalTableCellModel gVal
+        {
+            get { return new ClsTotalTableCellModel { field = "gVal", title = "警告阈值", items = new ClsTotalTableCellModel[0] }; }
+        }
+
+        public ClsTotalTableCellModel yVal
+        {
+            get { return new ClsTotalTableCellModel { field = "yVal", title = "危险阈值", items = new ClsTotalTableCellModel[0] }; }
+        }
+
+        public ClsTotalTableCellModel oVal
+        {
+            get { return new ClsTotalTableCellModel { field = "oVal", title = "危害阈值", items = new ClsTotalTableCellModel[0] }; }
+        }
+
         public ClsTotalTableCellModel[] items { get; set; }
     }
 
@@ -54,11 +69,13 @@ namespace zh.fang.website.Models
             {
                 throw new ArgumentNullException(nameof(data));
             }
-
             var result = new JObject();
             var hashId = data.OrgId.GetHashCode();
             result[header.id.field] = hashId;
             result[header.rawId.field] = data.OrgId;
+            result[header.gVal.field] = data.GVal;
+            result[header.yVal.field] = data.YVal;
+            result[header.oVal.field] = data.OVal;
             if (!string.IsNullOrWhiteSpace(data.ParentId))
             {
                 result[header.parentId.field] = data.ParentId.GetHashCode();

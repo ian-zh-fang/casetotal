@@ -31,7 +31,7 @@
                 }
 
                 data.entity.Orgnization parent = null;
-                if (parent != null)
+                if (parent == null)
                 {
                     parent = handler.FetchOne(parentId);
                 }

@@ -8,7 +8,7 @@
     public class PrewarnController : Controller
     {
         // GET: Prewarm
-        [Filters.AuthFilter()]
+        //[Filters.AuthFilter()]
         public virtual ActionResult Index()
         {
             var header = GetTableHeader();

@@ -180,6 +180,9 @@
                         OrgName = org.Name,
                         ParentId = org.ParentId,
                         Order = org.Code.Length,
+                        GVal = org.Glv,
+                        OVal = org.Olv,
+                        YVal = org.Ylv,
                         ClassesTotals = new handle.Model.ClassesTotal[0]
                     })
                     orderby total.Order descending

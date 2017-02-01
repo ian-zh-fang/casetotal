@@ -162,11 +162,39 @@
 <script type="text/javascript">
 
         var fmtTotal = function (val, row) {
-            return '<div style="background-color:darkblue; color:white;">' + val + '</div>';
+            return '<div style="background-color:#e7eafa; color:#000000;">' + val + '</div>';
+            //return val;
         };
 
         var fmtSum = function (val, row) {
-            return '<div style="background-color:darkgreen; color:white;">' + val + '</div>';
+            return '<div style="background-color:#e7eafa; color:#000000;">' + val + '</div>';
+            //return val;
+        };
+
+        var fmtRender = function (val, row) {
+            var color = "#ffffff";
+            var fcolor = "#000000";
+            if (!!row.gVal && val < row.gVal) {
+                color = "green";
+                fcolor = "#ffffff";
+            }
+
+            if (!!row.gVal && val >= row.gVal && val < row.yVal) {
+                color = "#ffd800";
+                fcolor = "#000000";
+            }
+
+            if (!!row.yVal && val >= row.yVal && val < row.oVal) {
+                color = "darkorange";
+                fcolor = "#ffffff";
+            }
+
+            if (!!row.oVal && val >= row.oVal) {
+                color = "darkred";
+                fcolor = "#ffffff";
+            }
+
+            return '<div style="background-color:' + color + '; color:' + fcolor+';">' + val + '</div>';
         };
       
 </script>
@@ -181,7 +209,7 @@
 </div>
 
 <div style="margin-top:20px;">
-    <table class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
+    <table class="easyui-treegrid" title="这里是文本信息" style="width:100%;min-height:150px;"
            data-options="
             url: '@Url.Action("GetData")',
             method: 'get',
@@ -199,7 +227,7 @@
                 {
                     if (0 == item.items.Length)
                     {
-                        <th data-options="field:'@item.field',align:'center',width:1" rowspan="2">@Html.Raw(item.title)</th>
+                        <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(item.title)</th>
                         continue;
                     }
                     <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
@@ -213,7 +241,7 @@
                         <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">小计</th>
                         foreach (var cell in item.items)
                         {
-                            <th data-options="field:'@cell.field',align:'center',width:1">@Html.Raw(cell.title)</th>
+                            <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(cell.title)</th>
                         }
                     }
                 }

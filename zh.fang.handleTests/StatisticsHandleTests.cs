@@ -180,19 +180,19 @@ namespace zh.fang.handle.Tests
                 clsHandler.Remove<data.entity.CaseClasses>();
                 orgHandler.Remove<data.entity.Orgnization>();
 
-                var clsItems = AddCls((CaseClassesHandle)clsHandler);
-                var org = AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "崇仁县");
-                AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "巴山镇", org);
-                AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "桃源乡", org);
-                AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "马鞍镇", org);
-                for (int i = 0; i < 12; i++)
-                {
+                //var clsItems = AddCls((CaseClassesHandle)clsHandler);
+                //var org = AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "崇仁县");
+                //AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "巴山镇", org);
+                //AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "桃源乡", org);
+                //AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, "马鞍镇", org);
+                //for (int i = 0; i < 12; i++)
+                //{
 
-                    AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, $"测试乡镇名称 {i}", org);
-                }
+                //    AddOrgAndClsAndTotal((OrgHandle)orgHandler, (StatisticsHandle)totalHandler, clsItems, $"测试乡镇名称 {i}", org);
+                //}
 
-                var items = ((StatisticsHandle)totalHandler).OrgClassesTotal(DateTime.Now.AddDays(-1).ToUnixTime(), DateTime.Now.ToUnixTime());
-                Assert.IsTrue(0 <= items.Count());
+                //var items = ((StatisticsHandle)totalHandler).OrgClassesTotal(DateTime.Now.AddDays(-1).ToUnixTime(), DateTime.Now.ToUnixTime());
+                //Assert.IsTrue(0 <= items.Count());
             }
         }
 
