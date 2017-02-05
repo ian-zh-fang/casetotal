@@ -19,7 +19,7 @@
         </ul>
     </div>
     <div id="x-main-center" data-options="region:'center'" title="" class="x-clear-border" style="">
-        <iframe id="x-main-frame" class="x-clear-border" src="@Url.Action("index", "Prewarn")" style="width:98%; height:98%;"></iframe>
+        <iframe id="x-main-frame" class="x-clear-border" scrolling="no" src="@Url.Action("index", "Prewarn")" style="width:98%; height:98%;"></iframe>
     </div>
 </div>
 
@@ -33,9 +33,11 @@
         $(document).ready(function () {
             var consthg = 55;
             var windhg = $(window).height() - document.headerheight - document.footerheight - consthg;
+            document.centerheight = windhg - 6;
             $("#x-body-main").css("min-height", windhg);
-            $("#x-main-center").css("min-height", windhg - 6);
+            $("#x-main-center").css("min-height", document.centerheight);
             $("#x-main-left").css("min-height", windhg - 6);
+            
         });
     </script>
 }

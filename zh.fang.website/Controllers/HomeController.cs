@@ -23,7 +23,7 @@
 
         public ActionResult Admin()
         {
-            return RedirectToAction("login", "admin");
+            return RedirectToAction("index", "admin");
         }
 
         [HttpGet]

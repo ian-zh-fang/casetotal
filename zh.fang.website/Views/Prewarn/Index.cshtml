@@ -3,6 +3,41 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutFrame.cshtml";
 }
+@section styles{
+    <link type="text/css" href="@Url.Content("~/Scripts/kindeditor/themes/default/default.css")" rel="stylesheet" />
+    @*<link type="text/css" href="@Url.Content("~/Scripts/kindeditor/plugins/code/prettify.css")" rel="stylesheet" />*@
+}
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/kindeditor/kindeditor-all-min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/kindeditor/lang/zh-CN.js")"></script>
+    @*<script type="text/javascript" src="@Url.Content("~/Scripts/kindeditor/plugins/code/prettify.js")"></script>*@
+    <script type="text/javascript">
+        KindEditor.ready(function (K) {
+            //window.editor = K.create('#title');
+            window.editor = K.create('#title', {
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: false,
+                items: [
+                    'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+            });
+        });
+        $(document).ready(function () {
+            debugger;
+            var windhg = window.parent.document.centerheight;
+            if (!!windhg) {
+                windhg = 811;
+            }
+            $("#x-body-container").css("min-height", windhg);
+
+            var northheight = $("#x-container-north").height();
+            $("#x-container-center").css("min-height", windhg - northheight - 20);
+        });
+    </script>
+}
 <script type="text/javascript">
 
     var xtg = function () { return $("#x-tg"); };
@@ -60,7 +95,7 @@
     };
 
     var titleClick = function () {
-        $('#x-form-title').form('submit', {
+        @*$('#x-form-title').form('submit', {
             url:'@Url.Action("UpgradeTite")',
             success: function (data) {
                 debugger;
@@ -72,21 +107,36 @@
                     $.messager.alert('提示', '保存失败 !!', 'info');
                 }
             }
+        });*@
+        $.post('@Url.Action("UpgradeTite")', {
+            title: encodeURI(window.editor.html())
+        }, function (data) {
+            debugger;
+            data = JSON.parse(data);
+            if (!!data.data) {
+                $.messager.alert('提示', '保存成功 !!', 'info');
+            }
+            else {
+                $.messager.alert('提示', '保存失败 !!', 'info');
+            }
         });
     };
 </script>
-<div style="margin-top:15px; margin-left:1px;">
-    <form id="x-form-title" method="post">
-        <input id="title" name="title" value="@ViewBag.HomeTitle" multiline="true" class="easyui-textbox" data-options="buttonText:'保存',prompt:'首页表格文本内容在此处输入',onClickButton:titleClick" style="width:100%;height:132px;">
-    </form>
-</div>
-<div style="margin-top:15px;">
-    <table id="x-tg" class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
-           data-options="
+<div id="x-body-container" class="easyui-layout x-clear-border x-body" style="margin:0 auto;">
+    <div id="x-container-north" data-options="region:'north'" class="x-clear-border" title="" style="min-height:240px;">
+        <div style="margin-left:5px;">
+            <textarea id="title" name="title" style="width:80%;height:100px;visibility:hidden;">@Html.Raw(HttpUtility.UrlDecode(ViewBag.HomeTitle))</textarea>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="titleClick()">保存</a>
+        </div>
+    </div>
+    <div id="x-container-center" data-options="region:'center',fit:false" title="" class="x-clear-border" style="">
+        <table id="x-tg" class="easyui-treegrid" title="" style="width:99%;min-height:150px;"
+               data-options="
             url: '@Url.Action("GetData")',
             method: 'get',
             rownumbers: true,
             fitColumns: true,
+            fit: false,
             showFooter: true,
             collapsible: true,
             animate: true,
@@ -94,32 +144,33 @@
             treeField: '@Model.company.field',
             onAfterEdit:afterEdit
            ">
-        <thead>
-            <tr>
-                <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
-                @foreach (var item in Model.items)
-                {
-                    if (0 == item.items.Length)
+            <thead>
+                <tr>
+                    <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
+                    @foreach (var item in Model.items)
                     {
-                        <th data-options="field:'@item.field',align:'center',width:1,editor:'numberbox'" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
-                        continue;
-                    }
-                    <th colspan="@(item.items.Length)">@Html.Raw(item.title)</th>
-                }
-                <th data-options="field:'@Model.id.field',align:'left',width:2,formatter:fmtOper" rowspan="2"></th>
-            </tr>
-            <tr>
-                @foreach (var item in Model.items)
-                {
-                    if (0 < item.items.Count())
-                    {
-                        foreach (var cell in item.items)
+                        if (0 == item.items.Length)
                         {
-                            <th data-options="field:'@cell.field',align:'center',width:1,editor:'numberbox'">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
+                            <th data-options="field:'@item.field',align:'center',width:1,editor:'numberbox'" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
+                            continue;
+                        }
+                        <th colspan="@(item.items.Length)">@Html.Raw(item.title)</th>
+                    }
+                    <th data-options="field:'@Model.id.field',align:'left',width:2,formatter:fmtOper" rowspan="2"></th>
+                </tr>
+                <tr>
+                    @foreach (var item in Model.items)
+                    {
+                        if (0 < item.items.Count())
+                        {
+                            foreach (var cell in item.items)
+                            {
+                                <th data-options="field:'@cell.field',align:'center',width:1,editor:'numberbox'">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
+                            }
                         }
                     }
-                }
-            </tr>
-        </thead>
-    </table>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>

@@ -228,8 +228,8 @@
     </div>
 </div>*@
 
-<div class="easyui-panel" title="" style="width:100%;padding:10px;">
-    @Html.Raw(ViewBag.HomeTitle);
+<div class="easyui-panel" title="" style="width:100%;padding:10px; font-size:18px;">
+    @Html.Raw(HttpUtility.UrlDecode(ViewBag.HomeTitle))
 </div>
 
 <div style="margin-top:10px;">

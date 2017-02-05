@@ -1,4 +1,9 @@
 ﻿
+html{
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
 .x-clear{
     zoom:1;
 }
