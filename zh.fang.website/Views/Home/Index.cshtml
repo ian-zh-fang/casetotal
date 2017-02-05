@@ -94,7 +94,16 @@
                     xAxis: [
                         {
                             type: 'category',
-                            data: data.categories
+                            data: data.categories,
+                            boundaryGap : true,
+                            show : true,
+                            axisLabel: {
+                                interval: 0 ,
+                                formatter: function (val) {
+                                    return val.split("").join("\n");
+                                    //return val;
+                                }
+                            }
                         }
                     ],
                     yAxis: [
@@ -196,9 +205,20 @@
 
             return '<div style="background-color:' + color + '; color:' + fcolor+';">' + val + '</div>';
         };
-      
+    
+
 </script>
-<div class="x-clear-border x-clear">
+<div id="x-body-chart" class="easyui-layout x-clear-border x-body" style="margin-top:5px; min-height:620px;">
+    <div id="x-chart-left" data-options="region:'west'" class="x-clear-border" title="" style="width:620px; ">
+        <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #95B8E7; min-height:600px; "></div>
+    </div>
+    <div id="x-chart-center" data-options="region:'center'" title="" class="x-clear-border" style="">
+        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7; min-height:260px; "></div>
+        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7; min-height:320px; "></div>
+    </div>
+</div>
+
+@*<div class="x-clear-border x-clear">
     <div class="x-index-chart-left x-clear-border">
         <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #95B8E7; min-height:500px; "></div>
     </div>
@@ -206,14 +226,14 @@
         <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7; min-height:200px; "></div>
         <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7; min-height:280px; "></div>
     </div>
-</div>
+</div>*@
 
 <div class="easyui-panel" title="" style="width:100%;padding:10px;">
     @Html.Raw(ViewBag.HomeTitle);
 </div>
 
 <div style="margin-top:10px;">
-    <table class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
+    <table class="easyui-treegrid" title="最近六周警情预警比率" style="width:100%;min-height:150px;"
            data-options="
             url: '@Url.Action("GetData")',
             method: 'get',
@@ -226,12 +246,12 @@
         <thead>
             <tr>
                 <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
-                <th data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Model.total.title</th>
+                <th data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Html.Raw(string.Join("<br />", Model.total.title.ToArray()))</th>
                 @foreach (var item in Model.items)
                 {
                     if (0 == item.items.Length)
                     {
-                        <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(item.title)</th>
+                        <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
                         continue;
                     }
                     <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
@@ -242,10 +262,10 @@
                 {
                     if (0 < item.items.Count())
                     {
-                        <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">小计</th>
+                        <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">@Html.Raw(string.Join("<br />", "小计".ToArray()))</th>
                         foreach (var cell in item.items)
                         {
-                            <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(cell.title)</th>
+                            <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
                         }
                     }
                 }

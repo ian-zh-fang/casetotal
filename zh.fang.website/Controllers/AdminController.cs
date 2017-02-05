@@ -28,7 +28,7 @@
                 data = true;
                 EnsureUser(usr);
             }
-            return Json(new { data = data, code = 0, msg = "Ok", url="/admin" });
+            return Json(new { data = data, code = 0, msg = "Ok", url="/admin" }, "text/html");
         }
 
         [Filters.AuthFilter()]
@@ -48,7 +48,7 @@
                 var module = new module.UserModule();
                 data = module.UpgPasswd(usr.Account, oldpwd, newpwd);
             }
-            return Json(new { data = data, code = code, msg = "Ok", url= "/admin/Signout" });
+            return Json(new { data = data, code = code, msg = "Ok", url= "/admin/Signout" }, "text/html");
         }
 
         [Filters.AuthFilter()]

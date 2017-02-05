@@ -16,7 +16,7 @@
         /// <returns></returns>
         public IEnumerable<handle.Model.ClassesTotal> ClassesTotalOnToday()
         {
-            return ClassesTotal(DateTime.Now.Date.ToUnixTime(), DateTime.Now.ToUnixTime());
+            return ClassesTotal(DateTime.Now.Date.ToUnixTime(), DateTime.Now.ToUnixTime(), t => t.ThdVal > 0);
         }
 
         /// <summary>
@@ -92,12 +92,22 @@
         /// <returns></returns>
         public IEnumerable<handle.Model.ClassesTotal> ClassesTotal(long timepoint1, long timepoint2)
         {
+            return ClassesTotal(timepoint1, timepoint2, t => !string.IsNullOrEmpty(t.ParentId));
+        }
+
+
+        private IEnumerable<handle.Model.ClassesTotal> ClassesTotal(long timepoint1, long timepoint2, Func<data.entity.CaseClasses, bool> predicate)
+        {
             var tuple = CompareSwitchTimestamp(timepoint1, timepoint2);
             using (handle.Handle
                 totalHandler = new handle.StatisticsHandle(),
                 clsHandler = new handle.CaseClassesHandle())
             {
                 var clsItems = ((handle.CaseClassesHandle)clsHandler).FetchAll();
+                if (predicate != null)
+                {
+                    clsItems = clsItems.Where(predicate);
+                }
                 var clsTotalItems = ((handle.StatisticsHandle)totalHandler).ClassesTotal(tuple.Item1, tuple.Item2);
                 var items =
                     from cls in clsItems
@@ -108,6 +118,7 @@
                 return items;
             }
         }
+
 
         public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalOnWeeks(int count)
         {

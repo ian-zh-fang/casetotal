@@ -101,7 +101,7 @@
                 {
                     if (0 == item.items.Length)
                     {
-                        <th data-options="field:'@item.field',align:'center',width:1,editor:'numberbox'" rowspan="2">@Html.Raw(item.title)</th>
+                        <th data-options="field:'@item.field',align:'center',width:1,editor:'numberbox'" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
                         continue;
                     }
                     <th colspan="@(item.items.Length)">@Html.Raw(item.title)</th>
@@ -115,7 +115,7 @@
                     {
                         foreach (var cell in item.items)
                         {
-                            <th data-options="field:'@cell.field',align:'center',width:1,editor:'numberbox'">@Html.Raw(cell.title)</th>
+                            <th data-options="field:'@cell.field',align:'center',width:1,editor:'numberbox'">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
                         }
                     }
                 }

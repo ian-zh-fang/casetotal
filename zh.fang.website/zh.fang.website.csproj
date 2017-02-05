@@ -990,6 +990,7 @@
     <Content Include="Views\Shared\_LayoutFrame.cshtml" />
     <Content Include="Views\Org\Index.cshtml" />
     <Content Include="Views\Prewarn\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\casetotal.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

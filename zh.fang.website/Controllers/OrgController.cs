@@ -38,7 +38,7 @@
         {
             var module = new module.OrgModule();
             var data = module.AddOrg(name, parentId, gVal, yVal, oVal);
-            return Json(new { data = data, code = 0, msg = "Ok" });
+            return Json(new { data = data, code = 0, msg = "Ok" }, "text/html");
         }
 
         [HttpPost]
@@ -46,7 +46,7 @@
         {
             var module = new module.OrgModule();
             var data = module.UpgOrg(id, name, gVal, yVal, oVal);
-            return Json(new { data = data, code = 0, msg = "Ok" });
+            return Json(new { data = data, code = 0, msg = "Ok" }, "text/html");
         }
 
         [HttpPost]
@@ -54,7 +54,7 @@
         {
             var module = new module.OrgModule();
             var data = module.DelOrg(id);
-            return Json(new { data = data, code = 0, msg = "Ok" });
+            return Json(new { data = data, code = 0, msg = "Ok" }, "text/html");
         }
     }
 }

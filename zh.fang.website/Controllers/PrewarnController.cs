@@ -67,7 +67,7 @@
             {
                 code = 0;
             }
-            return Json(new { data = data, code = code, msg = "Ok" });
+            return Json(new { data = data, code = code, msg = "Ok" }, "text/html");
         }
 
         [System.Web.Mvc.HttpPost]
@@ -80,7 +80,7 @@
                 data = module.ChangeHomeTitle(title);
             }
             
-            return Json(new { data = data, code = 0, msg = "Ok" });
+            return Json(new { data = data, code = 0, msg = "Ok" }, "text/html");
         }
     }
 }

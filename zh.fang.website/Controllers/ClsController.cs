@@ -39,7 +39,7 @@
         {
             var module = new module.ClassesModule();
             var data = module.AddCls(name, parentId, alertVal);
-            return Json(new { data = data, code = 0, msg = "Ok" });
+            return Json(new { data = data, code = 0, msg = "Ok" }, "text/html");
         }
 
         [HttpPost]
@@ -47,7 +47,7 @@
         {
             var module = new module.ClassesModule();
             var data = module.DelCls(id);
-            return Json(new { data = data, code = 0, msg = "Ok" });
+            return Json(new { data = data, code = 0, msg = "Ok" }, "text/html");
         }
 
         [HttpPost]
@@ -55,7 +55,7 @@
         {
             var module = new module.ClassesModule();
             var data = module.UpgCls(id, name, alertVal);
-            return Json(new { data = data, code = 0, msg = "Ok" });
+            return Json(new { data = data, code = 0, msg = "Ok" }, "text/html");
         }
     }
 }

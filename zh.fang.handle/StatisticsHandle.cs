@@ -64,6 +64,9 @@
                     OrgName = t.Key.Name,
                     ParentId = t.Key.ParentId,
                     Order = t.Key.Code.Length,
+                    GVal = t.Key.Glv,
+                    OVal = t.Key.Olv,
+                    YVal = t.Key.Ylv,
                     ClassesTotals = t.GroupBy(x => x.cls).Select(x => new Model.ClassesTotal
                     {
                         ClassId = x.Key.Id,

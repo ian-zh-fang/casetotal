@@ -24,7 +24,7 @@ a:hover, a:visited, a:active{
 }
 
 .x-body{
-    max-width:980px;
+    max-width:100%;
     text-align:center;
     margin:0px auto;
 }
@@ -63,7 +63,7 @@ a:hover, a:visited, a:active{
     margin:0px auto;
     text-align:left;
     padding-left:30px;
-    max-width:980px;
+    /*max-width:980px;*/
     color:white;
 }
 
