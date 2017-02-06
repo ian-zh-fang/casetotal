@@ -71,16 +71,40 @@
         }
 
         [System.Web.Mvc.HttpPost]
+        [ValidateInput(false)]
         public JsonResult UpgradeTite([FromBody]string title)
         {
             var data = false;
+            var code = 0;
+            var msg = "Ok";
             if (!string.IsNullOrWhiteSpace(title))
             {
-                var module = new module.ConfigModule();
-                data = module.ChangeHomeTitle(title);
+                title = title.ToLower().Replace("\r", "").Replace("\t", "");
+                var reg = new System.Text.RegularExpressions.Regex("[<][/]{0,1}[a-zA-Z]{1,}[>]");
+                var matches = reg.Matches(title);
+                var len = 0;
+                for (int i = 0; i < matches.Count; i++)
+                {
+                    var item = matches[i].Value;
+                    if (!string.IsNullOrWhiteSpace(item))
+                    {
+                        len += item.Length;
+                    }
+                }
+                len += (title.Length - len) * 2;
+                if (1024 <= len)
+                {
+                    code = -1;
+                    msg = "错误：内容太长 !!!";
+                }
+                else
+                {
+                    var module = new module.ConfigModule();
+                    data = module.ChangeHomeTitle(title);
+                }
             }
             
-            return Json(new { data = data, code = 0, msg = "Ok" }, "text/html");
+            return Json(new { data = data, code = code, msg = msg }, "text/html");
         }
     }
 }

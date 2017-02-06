@@ -7,6 +7,35 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/baidu/echarts.min.js")"></script>
     <script type="text/javascript">
 
+        function newline(option, number, axis) {
+            option[axis]['axisLabel'] = {
+                interval: 0,
+                formatter: function (params) {
+                    var newParamsName = "";
+                    var paramsNameNumber = params.length;
+                    var provideNumber = number;
+                    var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                    if (paramsNameNumber > provideNumber) {
+                        for (var p = 0; p < rowNumber; p++) {
+                            var tempStr = "";
+                            var start = p * provideNumber;
+                            var end = start + provideNumber;
+                            if (p == rowNumber - 1) {
+                                tempStr = params.substring(start, paramsNameNumber);
+                            } else {
+                                tempStr = params.substring(start, end) + "\n";
+                            }
+                            newParamsName += tempStr;
+                        }
+                    } else {
+                        newParamsName = params;
+                    }
+                    return newParamsName
+                }
+            }
+            return option;
+        }
+
         function drawPieOnToday(id)
         {
             var myChart = echarts.init(document.getElementById(id));
@@ -70,6 +99,7 @@
                     },
                     tooltip: {
                         trigger: 'axis',
+                        showDelay: 0,
                         axisPointer: {
                             type: 'shadow'
                         }
@@ -86,9 +116,9 @@
                         data: data.legends
                     },
                     grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
+                        x: 40,
+                        x2: 100,
+                        y2: 110,
                         containLabel: true
                     },
                     xAxis: [
@@ -98,11 +128,12 @@
                             boundaryGap : true,
                             show : true,
                             axisLabel: {
-                                interval: 0 ,
-                                formatter: function (val) {
-                                    return val.split("").join("\n");
-                                    //return val;
-                                }
+                                interval: 0,
+                                rotate: 30,
+                                //formatter: function (val) {
+                                //    return val.split("").join("\n");
+                                //    //return val;
+                                //}
                             }
                         }
                     ],
@@ -162,9 +193,12 @@
         }
 
         $(document).ready(function () {
+
             drawPieOnToday('x-pie-today');
             drawBarOnWeek('x-bar-week');
             drawBarOnMonth('x-bar-month');
+            $("div.panel-title").css("font-size", "18px");
+            $("div.panel-title").css("font-weight", "700");
         });
     </script>
 }
@@ -208,13 +242,13 @@
     
 
 </script>
-<div id="x-body-chart" class="easyui-layout x-clear-border x-body" style="margin-top:5px; min-height:620px;">
+<div id="x-body-chart" class="easyui-layout x-clear-border x-body" style="margin-top:5px; min-height:820px;">
     <div id="x-chart-left" data-options="region:'west'" class="x-clear-border" title="" style="width:620px; ">
-        <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #95B8E7; min-height:600px; "></div>
+        <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #95B8E7; min-height:800px; "></div>
     </div>
     <div id="x-chart-center" data-options="region:'center'" title="" class="x-clear-border" style="">
-        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7; min-height:260px; "></div>
-        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7; min-height:320px; "></div>
+        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7; min-height:400px; "></div>
+        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7; min-height:380px; "></div>
     </div>
 </div>
 
@@ -229,7 +263,7 @@
 </div>*@
 
 <div class="easyui-panel" title="" style="width:100%;padding:10px; font-size:18px;">
-    @Html.Raw(HttpUtility.UrlDecode(ViewBag.HomeTitle))
+    @Html.Raw(ViewBag.HomeTitle)
 </div>
 
 <div style="margin-top:10px;">

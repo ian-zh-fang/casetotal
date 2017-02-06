@@ -22,7 +22,7 @@
                 items: [
                     'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
                     'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+                    'insertunorderedlist', '|', 'link', '|', 'fullscreen']
             });
         });
         $(document).ready(function () {
@@ -109,12 +109,16 @@
             }
         });*@
         $.post('@Url.Action("UpgradeTite")', {
-            title: encodeURI(window.editor.html())
+            //title: encodeURI(window.editor.html())
+            title: window.editor.html()
         }, function (data) {
             debugger;
             data = JSON.parse(data);
             if (!!data.data) {
                 $.messager.alert('提示', '保存成功 !!', 'info');
+            }
+            else if (!!data.code && data.code == -1) {
+                $.messager.alert('提示', data.msg, 'info');
             }
             else {
                 $.messager.alert('提示', '保存失败 !!', 'info');
