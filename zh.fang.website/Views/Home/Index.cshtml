@@ -42,7 +42,7 @@
             $.get("@Url.Action("ClsTotalOnToday")", null, function (data) {
                 var option = {
                     title: {
-                        text: '本日案件分类统计数据'
+                        text: '本日警情分类统计数据'
                     },
                     tooltip: {
                         trigger: 'item',
@@ -140,7 +140,7 @@
                     yAxis: [
                         {
                             type: 'value',
-                            name: '次数'
+                            name: '起数'
                         },
                         {
                             type: 'value',
@@ -242,33 +242,15 @@
     
 
 </script>
-<div id="x-body-chart" class="easyui-layout x-clear-border x-body" style="margin-top:5px; min-height:820px;">
-    <div id="x-chart-left" data-options="region:'west'" class="x-clear-border" title="" style="width:620px; ">
-        <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #95B8E7; min-height:800px; "></div>
-    </div>
-    <div id="x-chart-center" data-options="region:'center'" title="" class="x-clear-border" style="">
-        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7; min-height:400px; "></div>
-        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7; min-height:380px; "></div>
+<div data-options="region:'north'">
+    <div class="easyui-panel" title="本日警情简要" style="width:100%;padding:10px; font-size:18px;">
+        @Html.Raw(ViewBag.HomeTitle)
     </div>
 </div>
-
-@*<div class="x-clear-border x-clear">
-    <div class="x-index-chart-left x-clear-border">
-        <div id="x-pie-today" style="margin:10px 15px auto 0px; border:1px solid #95B8E7; min-height:500px; "></div>
-    </div>
-    <div class="x-index-chart-right x-clear-border">
-        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7; min-height:200px; "></div>
-        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7; min-height:280px; "></div>
-    </div>
-</div>*@
-
-<div class="easyui-panel" title="" style="width:100%;padding:10px; font-size:18px;">
-    @Html.Raw(ViewBag.HomeTitle)
-</div>
-
-<div style="margin-top:10px;">
-    <table class="easyui-treegrid" title="最近六周警情预警比率" style="width:100%;min-height:150px;"
-           data-options="
+<div data-options="region:'center'" class="easyui-tabs" style="overflow-x:hidden;">
+    <div title="各单位警情分色预警表" style="margin-top:10px;">
+        <table class="easyui-treegrid" title="各单位警情分色预警表" style="width:100%;min-height:150px;"
+               data-options="
             url: '@Url.Action("GetData")',
             method: 'get',
             rownumbers: true,
@@ -277,33 +259,43 @@
             idField: 'id',
             treeField: '@Model.company.field'
            ">
-        <thead>
-            <tr>
-                <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
-                <th data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Html.Raw(string.Join("<br />", Model.total.title.ToArray()))</th>
-                @foreach (var item in Model.items)
-                {
-                    if (0 == item.items.Length)
+            <thead>
+                <tr>
+                    <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
+                    <th data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Html.Raw(string.Join("<br />", Model.total.title.ToArray()))</th>
+                    @foreach (var item in Model.items)
                     {
-                        <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
-                        continue;
-                    }
-                    <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
-                }
-            </tr>
-            <tr>
-                @foreach (var item in Model.items)
-                {
-                    if (0 < item.items.Count())
-                    {
-                        <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">@Html.Raw(string.Join("<br />", "小计".ToArray()))</th>
-                        foreach (var cell in item.items)
+                        if (0 == item.items.Length)
                         {
-                            <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
+                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
+                            continue;
+                        }
+                        <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
+                    }
+                </tr>
+                <tr>
+                    @foreach (var item in Model.items)
+                    {
+                        if (0 < item.items.Count())
+                        {
+                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">@Html.Raw(string.Join("<br />", "小计".ToArray()))</th>
+                            foreach (var cell in item.items)
+                            {
+                                <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
+                            }
                         }
                     }
-                }
-            </tr>
-        </thead>
-    </table>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div title="本日警情分析" style="padding:10px;">
+        <div id="x-pie-today" style=""></div>
+    </div>
+    <div title="本周与上周警情环比分析">
+        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7;"></div>
+    </div>
+    <div title="本月与上月警情环比分析">
+        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7;"></div>
+    </div>
 </div>
