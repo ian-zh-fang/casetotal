@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using Newtonsoft.Json.Linq;
+    using zh.fang.common;
 
     public class HomeController : PrewarnController
     {
@@ -32,7 +33,19 @@
             var module = new module.StatisticsModule();
             var header = GetTableHeader();
             var model = new Models.OrgClsTotalModel();
-            var items = module.OrgClassTotalOnWeeks(6).Select(t => model.GetData(t, header)).ToArray();
+            const int weekinterval = 7;
+            const int weeks = 5;
+            var seedTime = System.DateTime.Now.FirstDayCurrentweeek().AddDays(0 - weeks * weekinterval);
+            var vitems = module.OrgClassTotalOnWeeks(weeks, seedTime).Select(t => model.GetData(t, header)).ToArray();
+            var items =
+                module.OrgClassTotalOnWeeks(weeks).Select(
+                    t =>
+                    {
+                        var d = model.GetData(t, header);
+                        var orgId = d.GetValue(header.rawId.field).Value<string>();
+                        d[header.verif.field] = vitems.FirstOrDefault(x => orgId == x.GetValue(header.rawId.field).Value<string>()) ?? new JObject();
+                        return d;
+                    }).ToArray();
             var data = new JArray(items);
             var json = new JObject();
             json["total"] = items.Count();

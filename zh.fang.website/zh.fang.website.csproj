@@ -1192,6 +1192,8 @@
     <Content Include="Views\Org\Index.cshtml" />
     <Content Include="Views\Prewarn\Index.cshtml" />
     <None Include="Properties\PublishProfiles\casetotal.pubxml" />
+    <Content Include="Views\Shared\_TotalTable.cshtml" />
+    <Content Include="Views\Admin\TopLogin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1244,7 +1246,7 @@
           <DevelopmentServerPort>61561</DevelopmentServerPort>
           <DevelopmentServerVPath>
           </DevelopmentServerVPath>
-          <IISUrl>http://localhost:3803/</IISUrl>
+          <IISUrl>http://localhost:61561/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

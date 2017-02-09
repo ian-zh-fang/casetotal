@@ -17,6 +17,11 @@
             return View();
         }
 
+        public ActionResult TopLogin()
+        {
+            return View();
+        }
+
         [System.Web.Mvc.HttpPost]
         public JsonResult Signin([FromBody]string userid, [FromBody]string passwd)
         {

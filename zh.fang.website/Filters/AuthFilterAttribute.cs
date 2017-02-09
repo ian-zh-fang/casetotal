@@ -21,7 +21,7 @@
             filterContext.HttpContext.Session.Clear();
             filterContext.HttpContext.Session.Abandon();
             //filterContext.HttpContext.Response.Redirect("/admin/login");
-            filterContext.Result = new RedirectResult("/admin/login");
+            filterContext.Result = new RedirectResult("/admin/toplogin");
         }
     }
 }

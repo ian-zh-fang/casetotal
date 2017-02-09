@@ -42,30 +42,30 @@
             $.get("@Url.Action("ClsTotalOnToday")", null, function (data) {
                 var option = {
                     title: {
-                        text: '本日警情分类统计数据'
+                        text: ''
                     },
                     tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b}: {c} ({d}%)"
                     },
                     legend: {
-                        orient: 'horizontal',
-                        bottom: 20,
-                        left: 20,
-                        right:20,
+                        orient: 'vertical',
+                        left: 10,
+                        top: 20,
                         data: data.legends
                     },
                     series: [
                         {
-                            name: '分类合计',
+                            name: '',
                             type: 'pie',
                             selectedMode: 'single',
-                            center: ['50%', '40%'],
+                            center: ['70%', '40%'],
                             radius: [0, '30%'],
 
                             label: {
                                 normal: {
-                                    position: 'inner'
+                                    position: 'inner',
+                                    show: false
                                 }
                             },
                             labelLine: {
@@ -76,9 +76,9 @@
                             data: data.itotals
                         },
                         {
-                            name: '分类详细',
+                            name: '',
                             type: 'pie',
-                            center: ['50%', '40%'],
+                            center: ['70%', '40%'],
                             radius: ['40%', '55%'],
 
                             data: data.ototals
@@ -95,7 +95,7 @@
             $.get(url, null, function (data) {
                 var option = {
                     title: {
-                        text: data.title
+                        text: ''
                     },
                     tooltip: {
                         trigger: 'axis',
@@ -116,9 +116,9 @@
                         data: data.legends
                     },
                     grid: {
-                        x: 40,
-                        x2: 100,
-                        y2: 110,
+                        x: 10,
+                        x2: 10,
+                        y2: 60,
                         containLabel: true
                     },
                     xAxis: [
@@ -129,11 +129,7 @@
                             show : true,
                             axisLabel: {
                                 interval: 0,
-                                rotate: 30,
-                                //formatter: function (val) {
-                                //    return val.split("").join("\n");
-                                //    //return val;
-                                //}
+                                rotate: 30
                             }
                         }
                     ],
@@ -197,8 +193,9 @@
             drawPieOnToday('x-pie-today');
             drawBarOnWeek('x-bar-week');
             drawBarOnMonth('x-bar-month');
-            $("div.panel-title").css("font-size", "18px");
-            $("div.panel-title").css("font-weight", "700");
+            //$("div.panel-title").css("font-size", "18px");
+            //$("div.panel-title").css("font-weight", "700");
+            $("a.tabs-inner").attr('href', '#');
         });
     </script>
 }
@@ -242,23 +239,55 @@
     
 
 </script>
-<div data-options="region:'north'">
-    <div class="easyui-panel" title="本日警情简要" style="width:100%;padding:10px; font-size:18px;">
-        @Html.Raw(ViewBag.HomeTitle)
+<div class="easyui-layout" style="height:420px;">
+    <div data-options="region:'west'" class="x-clear-border" style="width:60%; padding:10px;">
+        <div class="easyui-panel" data-options="fit:true" title="本日警情简要" style="padding:10px;word-wrap:break-word;">
+            @Html.Raw(ViewBag.HomeTitle)
+        </div>
+    </div>
+    <div data-options="region:'center'" class="x-clear-border" style="padding:10px;">
+        <div id="x-pie-today" class="easyui-panel" data-options="fit:true" title="本日警情分析" style="padding:10px;"></div>
     </div>
 </div>
-<div data-options="region:'center'" class="easyui-tabs" style="overflow-x:hidden;">
-    <div title="各单位警情分色预警表" style="margin-top:10px;">
-        <table class="easyui-treegrid" title="各单位警情分色预警表" style="width:100%;min-height:150px;"
+<div class="easyui-layout" style="height:420px;">
+    <div data-options="region:'west'" class="x-clear-border" style="width:50%; padding:10px;">
+        <div id="x-bar-week" class="easyui-panel" data-options="fit:true" title="本周与上周警情环比分析" style="padding:10px;"></div>
+    </div>
+    <div data-options="region:'center'" class="x-clear-border" style="padding:10px;">
+        <div id="x-bar-month" class="easyui-panel" data-options="fit:true" title="本月与上月警情环比分析" style="padding:10px;"></div>
+    </div>
+</div>
+<div class="easyui-tabs" style="padding:10px;height:auto;">
+    <div title="各单位警情分色预警表" class="x-clear-border" style="padding:10px;">
+        <div style="padding:5px;">
+            <div style="height:26px; line-height:26px;">
+                下面表格统计最近六周的各类警情数据，并将统计后的数据除以六，最后呈现的是最近六周内各类警情的每周平均数据。
+            </div>
+            <div>
+                分色说明：
+                <div style="padding:5px; color:red;">
+                    1，以最近六周的上一个六周内的各类警情平均数据为基础；
+                    <br />
+                    2，如果最近最近六周的平均值不超过上一个六周的平均数，那么显示绿色；
+                    <br />
+                    3，如果最近最近六周的平均值达到并不超过上一个六周的平均数的40%，那么显示黄色；
+                    <br />
+                    4，如果最近最近六周的平均值达到并超过上一个六周的平均数的40%，同时不超过上一个六周的平均数的60%，那么显示橙色；
+                    <br />
+                    5，如果最近最近六周的平均值达到并超过上一个六周的平均数的60%，那么显示红。
+                </div>
+            </div>
+        </div>
+        <table class="easyui-treegrid" style="width:100%;min-height:150px;"
                data-options="
-            url: '@Url.Action("GetData")',
-            method: 'get',
-            rownumbers: true,
-            showFooter: true,
-            fitColumns: true,
-            idField: 'id',
-            treeField: '@Model.company.field'
-           ">
+               url: '@Url.Action("GetData")' ,
+               method: 'get' ,
+               rownumbers: true,
+               showFooter: true,
+               fitColumns: true,
+               idField: 'id' ,
+               treeField: '@Model.company.field'
+               ">
             <thead>
                 <tr>
                     <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
@@ -289,13 +318,92 @@
             </thead>
         </table>
     </div>
-    <div title="本日警情分析" style="padding:10px;">
-        <div id="x-pie-today" style=""></div>
+    <div title="昨日警情数据" class="x-clear-border" style="padding:10px;">
+        <div style="height:26px; line-height:26px; padding:5px;">
+            下面表格统计昨日警情数据
+        </div>
+        <table class="easyui-treegrid" style="width:100%;min-height:150px;"
+               data-options="
+               url: '@Url.Action("GetData")' ,
+               method: 'get' ,
+               rownumbers: true,
+               showFooter: true,
+               fitColumns: true,
+               idField: 'id' ,
+               treeField: '@Model.company.field'
+               ">
+            <thead>
+                <tr>
+                    <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
+                    <th data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Html.Raw(string.Join("<br />", Model.total.title.ToArray()))</th>
+                    @foreach (var item in Model.items)
+                    {
+                        if (0 == item.items.Length)
+                        {
+                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
+                            continue;
+                        }
+                        <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
+                    }
+                </tr>
+                <tr>
+                    @foreach (var item in Model.items)
+                    {
+                        if (0 < item.items.Count())
+                        {
+                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">@Html.Raw(string.Join("<br />", "小计".ToArray()))</th>
+                            foreach (var cell in item.items)
+                            {
+                                <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
+                            }
+                        }
+                    }
+                </tr>
+            </thead>
+        </table>
     </div>
-    <div title="本周与上周警情环比分析">
-        <div id="x-bar-week" style="margin:10px 0px auto 10px; border:1px solid #95B8E7;"></div>
-    </div>
-    <div title="本月与上月警情环比分析">
-        <div id="x-bar-month" style="margin:19px 0px auto 10px; border:1px solid #95B8E7;"></div>
+    <div title="本周警情数据" class="x-clear-border" style="padding:10px;">
+        <div style="height:26px; line-height:26px; padding:5px;">
+            下面表格统计本周警情数据
+        </div>
+        <table class="easyui-treegrid" style="width:100%;min-height:150px;"
+               data-options="
+               url: '@Url.Action("GetData")' ,
+               method: 'get' ,
+               rownumbers: true,
+               showFooter: true,
+               fitColumns: true,
+               idField: 'id' ,
+               treeField: '@Model.company.field'
+               ">
+            <thead>
+                <tr>
+                    <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
+                    <th data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Html.Raw(string.Join("<br />", Model.total.title.ToArray()))</th>
+                    @foreach (var item in Model.items)
+                    {
+                        if (0 == item.items.Length)
+                        {
+                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
+                            continue;
+                        }
+                        <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
+                    }
+                </tr>
+                <tr>
+                    @foreach (var item in Model.items)
+                    {
+                        if (0 < item.items.Count())
+                        {
+                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">@Html.Raw(string.Join("<br />", "小计".ToArray()))</th>
+                            foreach (var cell in item.items)
+                            {
+                                <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
+                            }
+                        }
+                    }
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>

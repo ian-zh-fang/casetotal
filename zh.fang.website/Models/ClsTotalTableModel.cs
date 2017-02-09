@@ -53,6 +53,8 @@ namespace zh.fang.website.Models
             get { return new ClsTotalTableCellModel { field = "oVal", title = "危害阈值", items = new ClsTotalTableCellModel[0] }; }
         }
 
+        public ClsTotalTableCellModel verif => new ClsTotalTableCellModel { field = "verif", title = "验证数据", items = new ClsTotalTableCellModel[0] };
+
         public ClsTotalTableCellModel[] items { get; set; }
     }
 

@@ -118,19 +118,20 @@
                 return items;
             }
         }
-
-
-        public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalOnWeeks(int count)
+                
+        public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalOnWeeks(int count, DateTime? seedTime = null)
         {
-            var currentWeekStartTime = DateTime.Now.FirstDayCurrentweeek();
+            seedTime = seedTime ?? DateTime.Now;
+
+            var currentWeekStartTime = ((DateTime)seedTime).FirstDayCurrentweeek();
             var offset = count * 7;
             var startTime = currentWeekStartTime.AddDays(0 - offset);
-            var items = OrgClassTotal(startTime.ToUnixTime(), DateTime.Now.ToUnixTime());
+            var items = OrgClassTotal(startTime.ToUnixTime(), ((DateTime)seedTime).ToUnixTime());
             items = items.Select(t =>
             {
                 t.ClassesTotals = t.ClassesTotals.Select(x =>
                 {
-                    x.TotalCount = x.TotalCount / count;
+                    x.TotalCount = x.TotalCount / (count + 1);
                     return x;
                 });
                 return t;
