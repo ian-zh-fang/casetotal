@@ -10,8 +10,8 @@
     <link type="text/css" rel="stylesheet" href="@Url.Content("~/Contents/Site.css")" />
     @RenderSection("styles", false)
 </head>
-<body style="padding:0 0 0 0; margin:0 0 0 0;">
-    <div>
+<body style="padding:0 0 0 0; margin:0 0 0 0;" class="easyui-layout x-clear-border">
+    <div data-options="region:'center',fit:true" class="x-clear-border" style="padding-left:10px;">
         @RenderBody()
     </div>
     <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.min.js?")"></script>

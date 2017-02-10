@@ -7,35 +7,6 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/baidu/echarts.min.js")"></script>
     <script type="text/javascript">
 
-        function newline(option, number, axis) {
-            option[axis]['axisLabel'] = {
-                interval: 0,
-                formatter: function (params) {
-                    var newParamsName = "";
-                    var paramsNameNumber = params.length;
-                    var provideNumber = number;
-                    var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-                    if (paramsNameNumber > provideNumber) {
-                        for (var p = 0; p < rowNumber; p++) {
-                            var tempStr = "";
-                            var start = p * provideNumber;
-                            var end = start + provideNumber;
-                            if (p == rowNumber - 1) {
-                                tempStr = params.substring(start, paramsNameNumber);
-                            } else {
-                                tempStr = params.substring(start, end) + "\n";
-                            }
-                            newParamsName += tempStr;
-                        }
-                    } else {
-                        newParamsName = params;
-                    }
-                    return newParamsName
-                }
-            }
-            return option;
-        }
-
         function drawPieOnToday(id)
         {
             var myChart = echarts.init(document.getElementById(id));
@@ -210,33 +181,40 @@
             return '<div style="background-color:#e7eafa; color:#000000;">' + val + '</div>';
             //return val;
         };
-
+    
         var fmtRender = function (val, row) {
+            var field = this.field;
+            var vvl = row.verif[field];
+            if (!val) {
+                return val;
+            }
+
             var color = "#ffffff";
             var fcolor = "#000000";
-            if (!!row.gVal && val < row.gVal) {
+            if (val < vvl) {
                 color = "green";
                 fcolor = "#ffffff";
             }
 
-            if (!!row.gVal && val >= row.gVal && val < row.yVal) {
-                color = "#ffd800";
-                fcolor = "#000000";
+            var vvl4 = vvl + vvl * 0.4;
+            var vvl6 = vvl + vvl * 0.6;
+            if (val >= vvl && val < vvl4) {
+                color = "green";
+                fcolor = "#ffffff";
             }
 
-            if (!!row.yVal && val >= row.yVal && val < row.oVal) {
+            if (val >= vvl4 && val < vvl6) {
                 color = "darkorange";
                 fcolor = "#ffffff";
             }
 
-            if (!!row.oVal && val >= row.oVal) {
+            if (val >= vvl6) {
                 color = "darkred";
                 fcolor = "#ffffff";
             }
 
             return '<div style="background-color:' + color + '; color:' + fcolor+';">' + val + '</div>';
         };
-    
 
 </script>
 <div class="easyui-layout" style="height:420px;">
@@ -324,7 +302,7 @@
         </div>
         <table class="easyui-treegrid" style="width:100%;min-height:150px;"
                data-options="
-               url: '@Url.Action("GetData")' ,
+               url: '@Url.Action("GetDataOnYesterday")' ,
                method: 'get' ,
                rownumbers: true,
                showFooter: true,
@@ -340,7 +318,7 @@
                     {
                         if (0 == item.items.Length)
                         {
-                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
+                            <th data-options="field:'@item.field',align:'center',width:1" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
                             continue;
                         }
                         <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
@@ -354,7 +332,7 @@
                             <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">@Html.Raw(string.Join("<br />", "小计".ToArray()))</th>
                             foreach (var cell in item.items)
                             {
-                                <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
+                                <th data-options="field:'@cell.field',align:'center',width:1">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
                             }
                         }
                     }
@@ -368,7 +346,7 @@
         </div>
         <table class="easyui-treegrid" style="width:100%;min-height:150px;"
                data-options="
-               url: '@Url.Action("GetData")' ,
+               url: '@Url.Action("GetDataOnCurrentWeek")' ,
                method: 'get' ,
                rownumbers: true,
                showFooter: true,
@@ -379,12 +357,12 @@
             <thead>
                 <tr>
                     <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>
-                    <th data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Html.Raw(string.Join("<br />", Model.total.title.ToArray()))</th>
+                    <th style="background-color:darkred;" data-options="field:'@Model.total.field',align:'center',width:1,formatter:fmtTotal" rowspan="2">@Html.Raw(string.Join("<br />", Model.total.title.ToArray()))</th>
                     @foreach (var item in Model.items)
                     {
                         if (0 == item.items.Length)
                         {
-                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtRender" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
+                            <th data-options="field:'@item.field',align:'center',width:1" rowspan="2">@Html.Raw(string.Join("<br />", item.title.ToArray()))</th>
                             continue;
                         }
                         <th colspan="@(item.items.Length + 1)">@Html.Raw(item.title)</th>
@@ -395,10 +373,10 @@
                     {
                         if (0 < item.items.Count())
                         {
-                            <th data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">@Html.Raw(string.Join("<br />", "小计".ToArray()))</th>
+                            <th style="background-color:darkred;" data-options="field:'@item.field',align:'center',width:1,formatter:fmtSum">@Html.Raw(string.Join("<br />", "小计".ToArray()))</th>
                             foreach (var cell in item.items)
                             {
-                                <th data-options="field:'@cell.field',align:'center',width:1,formatter:fmtRender">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
+                                <th data-options="field:'@cell.field',align:'center',width:1">@Html.Raw(string.Join("<br />", cell.title.ToArray()))</th>
                             }
                         }
                     }

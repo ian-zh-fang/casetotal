@@ -22,19 +22,20 @@
                 items: [
                     'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
                     'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                    'insertunorderedlist', '|', 'link', '|', 'fullscreen']
+                    'insertunorderedlist', '|', 'link']
             });
+            var height = $("#x-editor-container").height() - 27;
+            window.editor.edit.setHeight(height);
         });
         $(document).ready(function () {
-            debugger;
-            var windhg = window.parent.document.centerheight;
-            if (!!windhg) {
-                windhg = 811;
-            }
-            $("#x-body-container").css("min-height", windhg);
+            //var windhg = window.parent.document.centerheight;
+            //if (!!windhg) {
+            //    windhg = 811;
+            //}
+            //$("#x-body-container").css("min-height", windhg);
 
-            var northheight = $("#x-container-north").height();
-            $("#x-container-center").css("min-height", windhg - northheight - 20);
+            //var northheight = $("#x-container-north").height();
+            //$("#x-container-center").css("min-height", windhg - northheight - 20);
         });
     </script>
 }
@@ -126,28 +127,32 @@
         });
     };
 </script>
-<div id="x-body-container" class="easyui-layout x-clear-border x-body" style="margin:0 auto;">
-    <div id="x-container-north" data-options="region:'north'" class="x-clear-border" title="" style="min-height:240px;">
-        <div style="margin-left:5px;">
-            <textarea id="title" name="title" style="width:80%;height:100px;visibility:hidden;">@Html.Raw(HttpUtility.UrlDecode(ViewBag.HomeTitle))</textarea>
-            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="titleClick()">保存</a>
+<div class="easyui-tabs" data-options="fit:true">
+    <div title="警情简要" class="x-clear-border">        
+        <div class="easyui-layout x-clear-border" data-options="fit:true">
+            <div id="x-editor-container" data-options="region:'center'" class="x-clear-border" style="padding:5px; overflow:hidden;">
+                <textarea id="title" name="title" style="width:100%;height:100%;visibility:hidden;">@Html.Raw(ViewBag.HomeTitle)</textarea>
+            </div>
+            <div data-options="region:'south'" class="x-clear-border" style="height:56px; padding:5px;">
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="titleClick()">保存</a>
+            </div>
         </div>
     </div>
-    <div id="x-container-center" data-options="region:'center',fit:false" title="" class="x-clear-border" style="">
-        <table id="x-tg" class="easyui-treegrid" title="" style="width:99%;min-height:150px;"
+    <div title="每日警情" class="x-clear-border" style="overflow-x:hidden; padding:5px 25px 5px 5px;">
+        <table id="x-tg" class="easyui-treegrid" title="" style="width:100%;min-height:150px;"
                data-options="
-            url: '@Url.Action("GetData")',
-            method: 'get',
-            rownumbers: true,
-            fitColumns: true,
-            fit: false,
-            showFooter: true,
-            collapsible: true,
-            animate: true,
-            idField: 'id',
-            treeField: '@Model.company.field',
-            onAfterEdit:afterEdit
-           ">
+               url: '@Url.Action("GetData")' ,
+               method: 'get' ,
+               rownumbers: true,
+               fitColumns: true,
+               fit: false,
+               showFooter: true,
+               collapsible: true,
+               animate: true,
+               idField: 'id' ,
+               treeField: '@Model.company.field' ,
+               onAfterEdit: afterEdit
+               ">
             <thead>
                 <tr>
                     <th data-options="field:'@Model.company.field'" rowspan="2">@Model.company.title</th>

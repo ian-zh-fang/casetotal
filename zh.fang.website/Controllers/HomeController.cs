@@ -55,6 +55,36 @@
         }
 
         [HttpGet]
+        public JObject GetDataOnYesterday()
+        {
+            var module = new module.StatisticsModule();
+            var header = GetTableHeader();
+            var model = new Models.OrgClsTotalModel();
+            var items = module.OrgClassTotalOnYesterday().Select(t => model.GetData(t, header)).ToArray();
+            var data = new JArray(items);
+            var json = new JObject();
+            json["total"] = items.Count();
+            json["rows"] = data;
+            json["footer"] = new JArray();
+            return json;
+        }
+
+        [HttpGet]
+        public JObject GetDataOnCurrentWeek()
+        {
+            var module = new module.StatisticsModule();
+            var header = GetTableHeader();
+            var model = new Models.OrgClsTotalModel();
+            var items = module.OrgClassTotalOnCurrentweek().Select(t => model.GetData(t, header)).ToArray();
+            var data = new JArray(items);
+            var json = new JObject();
+            json["total"] = items.Count();
+            json["rows"] = data;
+            json["footer"] = new JArray();
+            return json;
+        }
+
+        [HttpGet]
         public JsonResult ClsTotalOnToday()
         {
             var module = new module.StatisticsModule();

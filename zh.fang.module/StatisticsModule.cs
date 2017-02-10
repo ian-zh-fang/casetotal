@@ -228,6 +228,16 @@
             return OrgClassTotalNonCls(DateTime.Now.Date.ToUnixTime(), DateTime.Now.ToUnixTime());
         }
 
+        public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalOnYesterday()
+        {
+            return OrgClassTotal(DateTime.Now.Date.AddDays(-1).ToUnixTime(), DateTime.Now.Date.ToUnixTime());
+        }
+
+        public IEnumerable<handle.Model.OrgClassesTotal> OrgClassTotalOnCurrentweek()
+        {
+            return OrgClassTotal(DateTime.Now.FirstDayCurrentweeek().ToUnixTime(), DateTime.Now.ToUnixTime());
+        }
+
         /// <summary>
         /// 分组织机构和类型统计指定时间段内的案件发生次数，无统计下一级组织机构
         /// </summary>
