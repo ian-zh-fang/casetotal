@@ -7,10 +7,12 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/baidu/echarts.min.js")"></script>
     <script type="text/javascript">
 
+        var piedata = undefined;
         function drawPieOnToday(id)
         {
             var myChart = echarts.init(document.getElementById(id));
             $.get("@Url.Action("ClsTotalOnToday")", null, function (data) {
+                piedata = data;
                 var option = {
                     title: {
                         text: '本日警情分布'
@@ -24,7 +26,20 @@
                         bottom: 20,
                         left: 20,
                         right: 20,
-                        data: data.legends
+                        data: data.legends,
+                        formatter: function (name) {
+                            var val = 0;
+                            if (!!piedata.itotals) {
+                                for (var i = 0; i < data.itotals.length; i++) {
+                                    var item = data.itotals[i];
+                                    if (name == item.name) {
+                                        val = item.value;
+                                        break;
+                                    }
+                                }
+                            }
+                            return name + ': ' + val;
+                        }
                     },
                     series: [
                         {
@@ -38,7 +53,7 @@
                                 normal: {
                                     position: 'inner',
                                     show: true,
-                                    formatter: "{b}\r\n({c})"
+                                    formatter: "{b}"
                                 }
                             },
                             labelLine: {
@@ -56,7 +71,7 @@
                             label: {
                                 normal: {
                                     show: true,
-                                    formatter: "{b}\r\n({c})"
+                                    formatter: "{b}"
                                 }
                             },
                             data: data.ototals
@@ -236,7 +251,7 @@
     @Html.Raw(ViewBag.HomeTitle)
 </div>
 <div class="easyui-tabs" style="padding-top:10px; height:auto;">
-    <div title="各单位警情分色预警表" class="x-clear-border" style="padding:10px;">
+    <div title="各辖区警情分色预警表" class="x-clear-border" style="padding:10px;">
         <div style="padding:5px;">
             <div style="height:26px; line-height:26px;">
                 下面表格统计最近六周的各类警情数据，并将统计后的数据除以六，最后呈现的是最近六周内各类警情的每周平均数据。
