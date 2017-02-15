@@ -271,7 +271,7 @@ create table "tb_Config"
    "IsDel"              smallint             not null,
    "Name"               varchar(128)         not null,
    "Type"               smallint			 not null,
-   "Data"               varchar(1024)        not null,
+   "Data"               BLOB				 not null,
    constraint PK_TB_CONFIG primary key ("Id")
 );
 comment on table "tb_Config" is

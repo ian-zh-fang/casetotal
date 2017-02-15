@@ -37,6 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zh.fang.moduleTests", "zh.f
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "21 Documents", "21 Documents", "{14C9B468-0857-4F8C-88A1-EDBEFA88191B}"
 	ProjectSection(SolutionItems) = preProject
+		AlterQuery.sql = AlterQuery.sql
 		CreateDatabase.sql = CreateDatabase.sql
 		CreateTable.sql = CreateTable.sql
 		Database.sql = Database.sql
