@@ -108,10 +108,10 @@
                     $.messager.alert('提示', '保存失败 !!', 'info');
                 }
             }
-        });*@
+        });
         $.post('@Url.Action("UpgradeTite")', {
             //title: encodeURI(window.editor.html())
-            title: window.editor.html()
+            title: window.editor.html(),d:(new Date()).getTime()
         }, function (data) {
             debugger;
             data = JSON.parse(data);
@@ -123,6 +123,31 @@
             }
             else {
                 $.messager.alert('提示', '保存失败 !!', 'info');
+            }
+        });*@
+        $.ajax('@Url.Action("UpgradeTite")',{
+            method:'POST',
+            cache:false,
+            data:{
+                title: window.editor.html(),d:(new Date()).getTime()
+            },
+            dataType:'json',
+            error:function(data){
+                debugger;
+                $.messager.alert('提示', '保存失败 !!', 'info');
+            },
+            success:function(data){
+                debugger;
+                data = JSON.parse(data);
+                if (!!data.data) {
+                    $.messager.alert('提示', '保存成功 !!', 'info');
+                }
+                else if (!!data.code && data.code == -1) {
+                    $.messager.alert('提示', data.msg, 'info');
+                }
+                else {
+                    $.messager.alert('提示', '保存失败 !!', 'info');
+                }
             }
         });
     };
