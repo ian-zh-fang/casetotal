@@ -1135,6 +1135,7 @@
     <Compile Include="Config\GloableConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ClsController.cs" />
+    <Compile Include="Controllers\Home2Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrgController.cs" />
     <Compile Include="Controllers\PrewarnController.cs" />
@@ -1195,6 +1196,8 @@
     <None Include="Properties\PublishProfiles\casetotal.pubxml" />
     <Content Include="Views\Shared\_TotalTable.cshtml" />
     <Content Include="Views\Admin\TopLogin.cshtml" />
+    <Content Include="Views\Home2\Index.cshtml" />
+    <Content Include="Views\Home2\Index2.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

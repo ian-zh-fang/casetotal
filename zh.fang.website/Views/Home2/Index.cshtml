@@ -1,0 +1,258 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/baidu/echarts.min.js")"></script>
+    <script type="text/javascript">
+
+        var jsondata = [
+            { value: 335, name: '直接访问' },
+            { value: 310, name: '邮件营销' },
+            { value: 274, name: '联盟广告' },
+            { value: 235, name: '视频广告' },
+            { value: 400, name: '搜索引擎' }
+        ].sort(function (a, b) { return a.value - b.value });
+
+        var option = {
+            backgroundColor: '#2c343c',
+            "textStyle": {
+                color: 'rgba(255, 255, 255, 0.3)'
+            },
+            title: [{
+                text: 'title 1',
+                "textStyle": {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                x: '23%',
+                y: 0
+            }, {
+                text: 'title 2',
+                "textStyle": {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                x: '75%',
+                y: 0
+            },{
+                text: 'title 3',
+                "textStyle": {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                x: '23%',
+                y: '50%'
+            }],
+            grid: [{
+                top: '10%',
+                left: '50%',
+                width: '50%'
+            }],
+            xAxis: [{
+                gridIndex: 0,
+                "type": "value",
+                "axisLabel": {
+                    "show": false
+                },
+                "axisLine": {
+                    "show": false
+                },
+                "axisTick": {
+                    "show": false
+                },
+                "splitLine": {
+                    "show": false
+                }
+            }],
+            yAxis: [{
+                "type": "category",
+                gridIndex: 0,
+                "data": ["人民的名义", "剃刀边缘", "三生三世十里桃花", "因为遇见你", "微微一笑很倾城", "鸡毛飞上天", "琅琊榜", "欢乐颂", "锦绣未央", "大唐荣耀", "大唐荣耀", "大唐荣耀", "大唐荣耀", "大唐荣耀"],
+                "axisTick": {
+                    "inside": false,
+                    "show": false
+                },
+                "axisLabel": {
+                    "show": true,
+                    "interval": 0
+                },
+                "inverse": true
+            }],
+            legend: {
+
+                orient: 'vertical',
+                left: '35%',
+                top: '10%',
+                itemWidth: 25,
+                itemHeight: 25,
+                align: 'left',
+                selectedMode: false,
+                data: ['2D线', '3D线', '资源类', '采集类', '宝宝大全', '2D视频', '3D视频'],
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+
+            series: [{
+            name:'访问来源',
+            type:'pie',
+            hoverAnimation: false,
+            legendHoverLink:false,
+            radius: ['40%', '42%'],
+            center: ['20%', '50%'],
+            color: ['#915872', '#3077b7', '#9a8169', '#3f8797','#5b8144','#307889','#9c6a79'
+],
+            label: {
+                normal: {
+                    position: 'inner'
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                },
+               
+            },
+            tooltip: {
+               show:false,
+               
+               
+            },
+            
+            data:[
+                {value:435, name:''},
+                {value:679, name:''},
+                {value:848, name:''},
+                 {value:348, name:''},
+                 {value:679, name:''},
+                {value:848, name:''},
+                 {value:348, name:''}
+            ]
+        },
+        {
+            name:'访问来源',
+            type: 'pie',
+            center: ['20%', '50%'],
+            radius: ['42%', '55%'],
+            color: ['#d74e67', '#0092ff', '#eba954', '#21b6b9','#60a900','#01949b',' #f17677'],
+            label: {
+                normal: {
+                    formatter: '{b}\n{d}%'
+                },
+          
+            },
+            data:[
+                {value:435, name:'2D线'},
+                {value:679, name:'3D线'},
+                {value:848, name:'资源类'},
+                {value:348, name:'采集类'},
+                {value:679, name:'宝宝大全'},
+                {value:848, name:'2D视频'},
+                {value:348, name:'3D视频'}
+         
+            ]
+        }, {
+                "name": "爱奇艺",
+                "type": "bar",
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                "stack": "前台播放量",
+                "label": {
+                    "normal": {
+                        "show": false,
+                        textStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    }
+                },
+                //"barWidth": 5,
+                "data": [31476415, 6841569, 6372813, 5583119, "-", 2908400, 1657213, 1352003, 1233351, "-", "-", "-", "-", "-"]
+            }, {
+                "name": "优酷",
+                "type": "bar",
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                "stack": "前台播放量",
+                "label": {
+                    "normal": {
+                        "show": false,
+                        textStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    }
+                },
+                //"barWidth": 5,
+                "data": [34910612, "-", 5835834, "-", 9061273, "-", 918930, 1234345, 1718025, "-", "-", "-", "-", "-"]
+            }, {
+                "name": "腾讯",
+                "type": "bar",
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                "stack": "前台播放量",
+                "label": {
+                    "normal": {
+                        "show": false,
+                        textStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    }
+                },
+                //"barWidth": 5,
+                "data": [59371212, 31552653, 7697182, 6149731, "-", "-", 2170058, 2167968, 1054977, 3799639, "-", "-", "-", "-"]
+            }, {
+                "name": "搜狐",
+                "type": "bar",
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                "stack": "前台播放量",
+                "label": {
+                    "normal": {
+                        "show": false,
+                        textStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    }
+                },
+                //"barWidth": 5,
+                "data": [11304567, 4820821, 1425845, "-", "-", 1962332, 167684, 131823, "-", "-", "-", "-", "-", "-"]
+            }, {
+                "name": "乐视",
+                "type": "bar",
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                "stack": "前台播放量",
+                "label": {
+                    "normal": {
+                        "show": false,
+                        textStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    }
+                },
+                //"barWidth": 5,
+                "data": ["-", 3830349, 1626410, 1456297, "-", 1582782, 354190, 249865, "-", "-", "-", "-", "-", "-"]
+            }, {
+                "name": "芒果",
+                "type": "bar",
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                "stack": "前台播放量",
+                "label": {
+                    "normal": {
+                        "show": false,
+                        textStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    }
+                },
+                //"barWidth": 5,
+                "data": [4188364, "-", "-", 764275, "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]
+            }]
+        };
+
+        var myChart = echarts.init(document.getElementById("x-chart"));
+        myChart.setOption(option);
+    </script>
+}
+
+<div id="x-chart" style="height:600px;"></div>

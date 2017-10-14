@@ -15,18 +15,16 @@
 
     @RenderSection("stysles", false)
 </head>
-<body>
+<body style="background-color:rgba(0, 0, 0, 0.1);">
     <div style="text-align:center;">
         @Html.Partial("_Header")
     </div>
     <div class="x-clear-border">
         @RenderBody()
     </div>
-    <div id="x-footer" style="text-align:center;">
+    <div id="x-footer" style="text-align:center; background-color:#2D3E50; min-height:100px; padding:10px; color:rgba(255, 255, 255, 0.5);">
         @Html.Partial($"_Footer")
-        <div style="margin-top:10px;">
-            <a href="@Url.Action("admin")" target="_blank">[ 后台管理 ]</a>
-        </div>
+        <a href="@Url.Action("admin", "Home")" style="color:rgba(255, 255, 255, 0.5); margin-left:25px; font-size:.75em;" target="_blank">@@ 管理</a>
     </div>
     <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.min.js?")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/easyui/jquery.easyui.min.js")"></script>
