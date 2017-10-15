@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -926,6 +927,7 @@
     <Content Include="Scripts\easyui\themes\metro\validatebox.css" />
     <Content Include="Scripts\easyui\themes\metro\window.css" />
     <Content Include="Scripts\easyui\themes\mobile.css" />
+    <Content Include="Scripts\jquery.echarts.js" />
     <Content Include="Scripts\kindeditor\kindeditor-all-min.js" />
     <Content Include="Scripts\kindeditor\kindeditor-all.js" />
     <Content Include="Scripts\kindeditor\lang\ar.js" />
@@ -1198,6 +1200,7 @@
     <Content Include="Views\Admin\TopLogin.cshtml" />
     <Content Include="Views\Home2\Index.cshtml" />
     <Content Include="Views\Home2\Index2.cshtml" />
+    <None Include="Scripts\_references.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1250,7 +1253,7 @@
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>
           </DevelopmentServerVPath>
-          <IISUrl>http://localhost:50475/</IISUrl>
+          <IISUrl>http://localhost:50476/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
