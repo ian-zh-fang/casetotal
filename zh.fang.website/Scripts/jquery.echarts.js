@@ -4,7 +4,8 @@
 (function ($, undefined) {
 
     var defaults = {
-        bgcolor:'rgba(255, 255, 255, 0.7)',
+        bgColor: '#404A59',
+        textColor:'#ffffff',
         colors: ['#d74e67', '#eba954', '#5b8144'],
         data: []
     };
@@ -85,11 +86,11 @@
         };
     }
 
-    function _getTitle(total) {
+    function _getTitle(total, txtColor) {
         return [{
             text: '警情分布',
             textStyle: {
-                color: '#000000',
+                color: txtColor,
                 fontSize: 13
             },
             x: '18%',
@@ -97,14 +98,14 @@
         }, {
             text: '各辖区警情分布',
             textStyle: {
-                color: '#000000',
+                color: txtColor,
                 fontSize: 13
             },
             x: '55%',
             y: '10px'
         }, {
             text: '警情总数:\n\n' + total + ' 起',
-            textStyle: { color: '#000000' },
+            textStyle: { color: '#ffd285' },
             x: '18%',
             y: '43%'
         }];
@@ -139,7 +140,7 @@
         };
     }
 
-    function _getLegend(data) {
+    function _getLegend(data, txtColor) {
         return {
             orient: 'horizontal',
             left: '35%',
@@ -149,7 +150,7 @@
             align: 'auto',
             //selectedMode: false,
             data: data.legendData,
-            textStyle: { color: '#000000' }
+            textStyle: { color: txtColor }
         };
     }
 
@@ -187,7 +188,7 @@
         };
     }
 
-    function _getStackBar(data, name, color) {
+    function _getStackBar(data, name, color, txtColor) {
         return {
             name: name,
             type: "bar",
@@ -198,21 +199,21 @@
             label: {
                 normal: {
                     show: false,
-                    textStyle: { color: '#000000' }
+                    textStyle: { color: txtColor }
                 }
             },
             data: data
         }
     }
 
-    function _getSeries(data, color) {
+    function _getSeries(data, color, txtColor) {
         var arr = [];
         var pieName = "警情分布";
         arr.push(_getInnerPie(data, pieName, color));
         arr.push(_getOuterPie(data, pieName, color));
         
         $.each(data.stackData, function (idx, o) {
-            arr.push(_getStackBar(o.value, o.name, color));
+            arr.push(_getStackBar(o.value, o.name, color, txtColor));
         });
 
         return arr;
@@ -220,19 +221,20 @@
 
     function _getOpts(options) {
         var color = options.colors;
+        var txtcolor = options.textColor;
         var data = _getData(options.data, color);
         var axis = _getAxis(data);
 
         return {
-            backgroundColor: options.bgcolor,
+            backgroundColor: options.bgColor,
             color: color,
-            textStyle: { color: '#000000' },
-            title: _getTitle(data.total),
+            textStyle: { color: txtcolor },
+            title: _getTitle(data.total, txtcolor),
             grid: _getGrid(),
             xAxis: axis.x,
             yAxis: axis.y,
-            legend: _getLegend(data),
-            series: _getSeries(data, color)
+            legend: _getLegend(data, txtcolor),
+            series: _getSeries(data, color, txtcolor)
         };
     }
 
@@ -291,280 +293,249 @@
 
     function _getOpt(opt) {
 
-        var bgColor = opt.bgColor;
-        var txtColor = opt.textColor;
+        var option = {
+            backgroundColor: "#404A59",
+            color: ['#ffd285', '#ff733f', '#ec4863'],
 
-        var data = [];
-        var otherdata = [];
-        var myData = ['杀人', '抢夺', '盗窃', '故意伤害', '诈骗', '抢劫', '侵犯人身', '侵犯财产', '纠纷', '交通事故'];
-        for (var i = 0; i < myData.length; i++) {
-            data.push(parseInt(Math.random() * (100 - 1 + 1) + 1));
-            otherdata.push(parseInt(Math.random() * (100 - 1 + 1) + 1));
-        }
-        data = data.sort(function (a, b) { return b - a; });
-        otherdata = otherdata.sort(function (a, b) { return a - b; });
-
-        return {
-            backgroundColor: bgColor,
-            //color: ['#d74e67', '#eba954'],
-            textStyle: {
-                color: txtColor
+            title: [{
+                text: '警情环比分析',
+                left: '50%',
+                top: '20px',
+                textStyle: {
+                    color: '#fff'
+                }
+            }],
+            tooltip: {
+                trigger: 'axis'
             },
-            legend: [{
-                data: ['本周', '上周'],
-                //selectedMode: false,
-                bottom: '10px',
-                left: '35%'
-            }],
+            legend: {
+                x: 300,
+                top: '7%',
+                textStyle: {
+                    color: '#ffd285',
+                },
+                data: ['上周', '本周']
+            },
             grid: [{
-                show: false,
-                left: '38%',
-                top: 60,
-                bottom: 60,
-                containLabel: false,
-                width: '26%',
+                left: '1%',
+                top: '20%',
+                bottom: '6%',
+                width: '45%',
+                containLabel: true
             }, {
-                show: false,
-                left: '68%',
-                top: 80,
-                bottom: 60,
-                width: '0%',
-            }, {
-                show: false,
-                right: '2%',
-                top: 60,
-                bottom: 60,
-                containLabel: false,
-                width: '26%',
-            }, {
-                show: false,
-                left: '7%',
-                top: '60px',
-                width: '30.5%',
+                right: '5%',
+                top: '20%',
+                bottom: '6%',
+                width: '30%',
+                containLabel: true,
+                show: false
             }],
-            xAxis: [
-                {
-                    type: 'value',
-                    inverse: true,
-                    axisLine: {
-                        show: false,
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    position: 'top',
-                    axisLabel: {
-                        show: false,
-                        textStyle: {
-                            color: '#B2B2B2',
-                            fontSize: 12,
-                        },
-                    },
-                    splitLine: {
-                        show: false,
-                        lineStyle: {
-                            color: '#B2B2B2',
-                            width: 1,
-                            type: 'dosh',
-                        },
-                    },
-                }, {
-                    gridIndex: 1,
-                    show: true,
-                }, {
-                    gridIndex: 2,
-                    type: 'value',
-                    axisLine: {
-                        show: false,
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    position: 'top',
-                    axisLabel: {
-                        show: false,
-                        textStyle: {
-                            color: '#B2B2B2',
-                            fontSize: 12,
-                        }
-                    },
-                    splitLine: {
-                        show: false,
-                        lineStyle: {
-                            color: '#B2B2B2',
-                            width: 1,
-                            type: 'dosh',
-                        },
+            toolbox: {
+                "show": false,
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: [{
+                type: 'category',
+                "axisLine": {
+                    lineStyle: {
+                        color: '#FF4500'
                     }
-                }, {
-                    gridIndex: 3,
-                    type: 'value',
-                    position: 'top',
-                    axisLine: {
-                        show: false,
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#B2B2B2',
-                            fontSize: 12,
+                },
+                "axisTick": {
+                    "show": false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                boundaryGap: false,
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            }, {
+                gridIndex: 1,
+                type: 'category',
+                "axisLine": {
+                    lineStyle: {
+                        color: '#FF4500'
+                    }
+                },
+                "axisTick": {
+                    "show": false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                boundaryGap: false,
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                axisTick: {
+                    alignWithLabel: true
+                }
+            }],
+            yAxis: [{
+                name: '起数',
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#fff'
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#fff'
+                    }
+                },
+                "axisTick": {
+                    "show": false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                type: 'value'
+            }, {
+                gridIndex: 1,
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#fff'
+                    }
+                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#fff'
+                    }
+                },
+                axisLabel: {
+                    show: false,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                axisTick: {
+                    alignWithLabel: true,
+                    show: false
+                }
+            }],
+            series: [{
+                name: '上周',
+                smooth: true,
+                type: 'line',
+                symbolSize: 8,
+                symbol: 'circle',
+                data: [90, 50, 39, 50, 120, 82, 80]
+            }, {
+                name: '本周',
+                smooth: true,
+                type: 'line',
+                symbolSize: 8,
+                symbol: 'circle',
+                data: [70, 50, 50, 87, 90, 80, 70]
+            },
+            {
+                type: 'pie',
+                center: ['57%', '50%'],
+                radius: ['45%', '50%'],
+                label: {
+                    normal: {
+                        position: 'center',
+                        formatter: '{b}\n{c}({d}%)'
+                    }
+                },
+                data: [{
+                    value: 335,
+                    name: '环比下降',
+                    itemStyle: {
+                        normal: {
+                            color: '#ffd285'
                         }
                     },
-                    splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: '#B2B2B2',
-                            width: 1,
-                            type: 'dosh',
-                        },
-                    },
-                    data: data
-                }],
-            yAxis: [
-                {
-                    type: 'category',
-                    inverse: true,
-                    position: 'right',
-                    axisLine: {
-                        show: false
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: false,
-                    },
-                    data: myData
-                }, {
-                    gridIndex: 1,
-                    type: 'category',
-                    inverse: true,
-                    position: 'left',
-                    axisLine: {
-                        show: false
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: false,
-                    },
-                    data: myData.map(function (value) {
-                        return {
-                            value: value,
+                    label: {
+                        normal: {
+                            formatter: '{d} %',
                             textStyle: {
-                                align: 'center',
+                                color: '#ffd285',
+                                fontSize: 20
+
                             }
                         }
-                    })
+                    }
                 }, {
-                    gridIndex: 2,
-                    type: 'category',
-                    inverse: true,
-                    position: 'left',
-                    axisLine: {
-                        show: false
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#9D9EA0',
-                            fontSize: 12,
-                        }
-                    },
-                    data: myData,
-                }, {
-                    gridIndex: 3,
-                    type: 'category',
-                    inverse: true,
-                    position: 'left',
-                    axisLine: {
+                    value: 180,
+                    name: '占位',
+                    tooltip: {
                         show: true
                     },
-                    axisTick: {
-                        show: false
+                    itemStyle: {
+                        normal: {
+                            color: '#87CEFA'
+                        }
                     },
-                    axisLabel: {
-                        show: true,
-                    },
-                    data: myData
-                }],
-            series: [{
-                name: '本周',
-                type: 'bar',
-                barGap: 2,
-                label: {
-                    normal: {
-                        show: false,
-                    },
-                    emphasis: {
-                        show: true,
-                        position: 'left',
-                        offset: [0, 0],
-                        textStyle: {
-                            color: '#fff',
-                            fontSize: 14
+                    label: {
+                        normal: {
+                            textStyle: {
+                                color: '#ffd285',
+                            },
+                            formatter: '\n环比下降'
                         }
                     }
-                },
-                itemStyle: {
-                    normal: {
-                        color: '#659F83'
-                    },
-                    emphasis: {
-                        color: '#08C7AE'
-                    },
-                },
-                data: data,
+                }]
             }, {
-                name: '上周',
+                name: '本周',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
                 type: 'bar',
-                barGap: 2,
-                xAxisIndex: 2,
-                yAxisIndex: 2,
                 label: {
                     normal: {
-                        show: false
-                    },
-                    emphasis: {
+                        position: 'top',
                         show: true,
-                        position: 'right',
-                        offset: [0, 0],
-                        textStyle: {
-                            color: '#fff',
-                            fontSize: 14
-                        }
+                        formatter: "{c}"
                     }
                 },
-                itemStyle: {
-                    normal: {
-                        color: '#F68989'
-                    },
-                    emphasis: {
-                        color: '#F94646'
-                    }
-                },
-                data: data
+                data: [1, 3, 2, 33, 4, 12, 1]
             }, {
-                xAxisIndex: 3,
-                yAxisIndex: 3,
-                name: '本周',
-                type: 'line',
-                data: data,
-            }, {
-                xAxisIndex: 3,
-                yAxisIndex: 3,
                 name: '上周',
-                type: 'line',
-                data: otherdata,
-            }]
-        }
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                type: 'bar',
+                label: {
+                    normal: {
+                        position: 'top',
+                        show: true,
+                        formatter: "{c}"
+                    }
+                },
+                data: [5, 31, 2, 3, 4, 2, 11]
+            }],
+            //label: {
+            //    normal: {
+            //        show: true,
+            //        position: 'top',
+            //        formatter: '{c}'
+            //    }
+            //},
+            //itemStyle: {
+            //    normal: {
+
+            //        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            //            offset: 0,
+            //            color: 'rgba(17, 168,171, 1)'
+            //        }, {
+            //            offset: 1,
+            //            color: 'rgba(17, 168,171, 0.1)'
+            //        }]),
+            //        shadowColor: 'rgba(0, 0, 0, 0.1)',
+            //        shadowBlur: 10
+            //    }
+            //}
+        };
+        return option;
     }
 
     function _draw(jq, opt) {
