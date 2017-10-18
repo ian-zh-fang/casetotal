@@ -14,7 +14,8 @@
 
     var x = 10;
     var y = 0;
-    for (var i = 1; i < 23; i++) {
+    var size = 16;
+    for (var i = 1; i < size; i++) {
 
         var data = [
             { name: '刑事', value: i },
@@ -93,7 +94,7 @@
                 color: txtColor,
                 fontSize: 13
             },
-            x: '18%',
+            x: '13%',
             y: '10px'
         }, {
             text: '各辖区警情分布',
@@ -101,18 +102,28 @@
                 color: txtColor,
                 fontSize: 13
             },
-            x: '55%',
+            x: '50%',
             y: '10px'
         }, {
             text: '警情总数:\n\n' + total + ' 起',
             textStyle: { color: '#ffd285' },
-            x: '18%',
+            x: '13%',
             y: '43%'
+        }, {
+            text: '警情分类详情',
+            textStyle: {
+                color: txtColor,
+                fontSize: 13
+            },
+            right: '10%',
+            top: '10px'
         }];
     }
 
     function _getGrid() {
-        return [{ top: '10%', left: '50%', 　width: '45%' }];
+        return [{ top: '20%', left: '35%', width: '39%', show: false }, {
+            top: '10%', right: '3%', width: '20%', show: false
+        }];
     }
 
     function _getYAxis(data, gridIndex) {
@@ -121,8 +132,33 @@
             type: 'category',
             data: data.yAxisData,
             axisTick: { inside: false, show: false },
+            axisLine: { show: false },
             axisLabel: { show: true, interval: 0 },
             inverse: true
+        }, {
+            gridIndex: 1,
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: '#fff'
+                }
+            },
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    color: '#fff'
+                }
+            },
+            axisLabel: {
+                show: false,
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            axisTick: {
+                alignWithLabel: true,
+                show: false
+            }
         }];
     }
     
@@ -135,15 +171,33 @@
                 axisLine: { "show": false },
                 axisTick: { "show": false },
                 splitLine: { "show": false }
+            }, {
+                    gridIndex: 1,
+                    type: 'category',
+                    "axisLine": {
+                        "show": false
+                    },
+                    "axisTick": {
+                        "show": true
+                    },
+                    axisLabel: {
+                        "show": true
+                    },
+                    boundaryGap: false,
+                    data: ["杀人", "抢夺", "抢劫", "盗窃", "交通事故", "求助", "纠纷"],
+                    axisTick: {
+                        "show": false,
+                        alignWithLabel: false
+                    }
             }],
             y: _getYAxis(data, 0)
         };
     }
 
     function _getLegend(data, txtColor) {
-        return {
+        return [{
             orient: 'horizontal',
-            left: '35%',
+            left: '25%',
             bottom: '20px',
             //itemWidth: 25,
             //itemHeight: 25,
@@ -151,7 +205,7 @@
             //selectedMode: false,
             data: data.legendData,
             textStyle: { color: txtColor }
-        };
+        }];
     }
 
     function _getInnerPie(data, name, color) {
@@ -160,8 +214,8 @@
             type: 'pie',
             hoverAnimation: false,
             legendHoverLink: false,
-            radius: ['40%', '42%'],
-            center: ['20%', '50%'],
+            center: ['15%', '50%'],
+            radius: ['49%', '50%'],
             //color: color,
             label: {
                 normal: { position: 'inner', show: false }
@@ -178,8 +232,8 @@
         return {
             name: name,
             type: 'pie',
-            center: ['20%', '50%'],
-            radius: ['42%', '55%'],
+            center: ['15%', '50%'],
+            radius: ['50%', '55%'],
             //color: color,
             label: {
                 normal: { formatter: '{b}\n{c}({d}%)' }
@@ -196,6 +250,8 @@
             yAxisIndex: 0,
             stack: "辖区警情分布",
             //color: color,
+            //barGap: '30%',
+            barMaxWidth:'7px',
             label: {
                 normal: {
                     show: false,
@@ -216,6 +272,26 @@
             arr.push(_getStackBar(o.value, o.name, color, txtColor));
         });
 
+        arr.push({
+            name: '警情类型',
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            type: 'bar',
+            //barWidth: 15,
+            itemStyle: {
+                normal: {
+                    barBorderRadius: 0
+                }
+            },
+            label: {
+                normal: {
+                    position: 'top',
+                    show: true,
+                    formatter: "{c}"
+                }
+            },
+            data: [5, 31, 2, 3, 4, 2, 11]
+        });
         return arr;
     }
 
@@ -298,11 +374,12 @@
             color: ['#ffd285', '#ff733f', '#ec4863'],
 
             title: [{
-                text: '警情环比分析',
-                left: '50%',
+                text: '8，9 月警情环比分析',
+                left: '43%',
                 top: '20px',
                 textStyle: {
-                    color: '#fff'
+                    color: '#fff',
+                    align:'center'
                 }
             }],
             tooltip: {
@@ -314,7 +391,7 @@
                 textStyle: {
                     color: '#ffd285',
                 },
-                data: ['上周', '本周']
+                data: ['8 月', '9 月']
             },
             grid: [{
                 left: '1%',
@@ -338,13 +415,14 @@
             },
             xAxis: [{
                 type: 'category',
+                name:'时间 / 日',
                 "axisLine": {
                     lineStyle: {
                         color: '#FF4500'
                     }
                 },
                 "axisTick": {
-                    "show": false
+                    "show": true
                 },
                 axisLabel: {
                     textStyle: {
@@ -352,11 +430,20 @@
                     }
                 },
                 boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-            }, {
+                data: function () {
+                    var arr = [];
+                    var size = 32;
+                    for (var i = 1; i < size; i++) {
+                        arr.push(i+'日');
+                    }
+                    return arr;
+                }()
+            },
+            {
                 gridIndex: 1,
                 type: 'category',
                 "axisLine": {
+                    "show": false,
                     lineStyle: {
                         color: '#FF4500'
                     }
@@ -365,6 +452,7 @@
                     "show": false
                 },
                 axisLabel: {
+                    "show": false,
                     textStyle: {
                         color: '#fff'
                     }
@@ -372,9 +460,11 @@
                 boundaryGap: false,
                 data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
                 axisTick: {
-                    alignWithLabel: true
+                    "show": false,
+                    alignWithLabel: false
                 }
-            }],
+            }
+            ],
             yAxis: [{
                 name: '起数',
                 axisLine: {
@@ -424,19 +514,40 @@
                 }
             }],
             series: [{
-                name: '上周',
+                name: '8 月',
                 smooth: true,
                 type: 'line',
                 symbolSize: 8,
                 symbol: 'circle',
-                data: [90, 50, 39, 50, 120, 82, 80]
+                data: function () {
+                    var arr = [];
+                    var size = 31;
+
+                    var x = 150;
+                    var y = 2;
+                    for (var i = 0; i < size; i++) {
+                        var e = parseInt(Math.random() * (x - y + 1) + y);
+                        arr.push(e);
+                    }
+                    return arr.sort(function (a, b) { return b - a; });
+                }()
             }, {
-                name: '本周',
+                name: '9 月',
                 smooth: true,
                 type: 'line',
                 symbolSize: 8,
                 symbol: 'circle',
-                data: [70, 50, 50, 87, 90, 80, 70]
+                data: function () {
+                    var arr = [];
+                    var size = 31;
+                    var x = 205;
+                    var y = 10;
+                    for (var i = 0; i < size; i++) {
+                        var e = parseInt(Math.random() * (x - y + 1) + y);
+                        arr.push(e);
+                    }
+                    return arr.sort(function (a, b) { return b - a; });
+                }()
             },
             {
                 type: 'pie',
@@ -486,54 +597,133 @@
                         }
                     }
                 }]
-            }, {
-                name: '本周',
-                xAxisIndex: 1,
-                yAxisIndex: 1,
-                type: 'bar',
+            },
+            {
+                type: 'pie',
+                center: ['73%', '50%'],
+                radius: ['45%', '50%'],
                 label: {
                     normal: {
-                        position: 'top',
-                        show: true,
-                        formatter: "{c}"
+                        position: 'center',
+                        formatter: '{b}\n{c}({d}%)'
                     }
                 },
-                data: [1, 3, 2, 33, 4, 12, 1]
-            }, {
-                name: '上周',
-                xAxisIndex: 1,
-                yAxisIndex: 1,
-                type: 'bar',
-                label: {
-                    normal: {
-                        position: 'top',
-                        show: true,
-                        formatter: "{c}"
-                    }
-                },
-                data: [5, 31, 2, 3, 4, 2, 11]
-            }],
-            //label: {
-            //    normal: {
-            //        show: true,
-            //        position: 'top',
-            //        formatter: '{c}'
-            //    }
-            //},
-            //itemStyle: {
-            //    normal: {
+                data: [{
+                    value: 218,
+                    name: '环比下降',
+                    itemStyle: {
+                        normal: {
+                            color: '#ffd285'
+                        }
+                    },
+                    label: {
+                        normal: {
+                            formatter: '两抢一盗\n\n{d} %',
+                            textStyle: {
+                                color: '#ffd285',
+                                fontSize: 20
 
-            //        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-            //            offset: 0,
-            //            color: 'rgba(17, 168,171, 1)'
-            //        }, {
-            //            offset: 1,
-            //            color: 'rgba(17, 168,171, 0.1)'
-            //        }]),
-            //        shadowColor: 'rgba(0, 0, 0, 0.1)',
-            //        shadowBlur: 10
-            //    }
+                            }
+                        }
+                    }
+                }, {
+                    value: 180,
+                    name: '占位',
+                    tooltip: {
+                        show: true
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#87CEFA'
+                        }
+                    },
+                    label: {
+                        normal: {
+                            textStyle: {
+                                color: '#ffd285',
+                            },
+                            formatter: '\n环比下降'
+                        }
+                    }
+                }]
+            },
+            {
+                type: 'pie',
+                center: ['89%', '50%'],
+                radius: ['45%', '50%'],
+                label: {
+                    normal: {
+                        position: 'center',
+                        formatter: '{b}\n{c}({d}%)'
+                    }
+                },
+                data: [{
+                    value: 35,
+                    name: '环比下降',
+                    itemStyle: {
+                        normal: {
+                            color: '#ffd285'
+                        }
+                    },
+                    label: {
+                        normal: {
+                            formatter: '其它警情\n\n{d} %',
+                            textStyle: {
+                                color: '#ffd285',
+                                fontSize: 20
+
+                            }
+                        }
+                    }
+                }, {
+                    value: 180,
+                    name: '占位',
+                    tooltip: {
+                        show: true
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#87CEFA'
+                        }
+                    },
+                    label: {
+                        normal: {
+                            textStyle: {
+                                color: '#ffd285',
+                            },
+                            formatter: '\n环比下上升'
+                        }
+                    }
+                }]
+            },
+            //{
+            //    name: '本周',
+            //    xAxisIndex: 1,
+            //    yAxisIndex: 1,
+            //    type: 'bar',
+            //    label: {
+            //        normal: {
+            //            position: 'top',
+            //            show: true,
+            //            formatter: "{c}"
+            //        }
+            //    },
+            //    data: [1, 3, 2, 33, 4, 12, 1]
+            //}, {
+            //    name: '上周',
+            //    xAxisIndex: 1,
+            //    yAxisIndex: 1,
+            //    type: 'bar',
+            //    label: {
+            //        normal: {
+            //            position: 'top',
+            //            show: true,
+            //            formatter: "{c}"
+            //        }
+            //    },
+            //    data: [5, 31, 2, 3, 4, 2, 11]
             //}
+            ]
         };
         return option;
     }
