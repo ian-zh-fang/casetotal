@@ -97,7 +97,8 @@
         <span style="padding-left:10px; padding-right:10px;">警情环比分析</span>
         <span>=&diams;=</span>
     </div>
-    <div id="x-chart-perd-hb" class="x-body-contrianer" style="height:460px; margin:0px auto; text-align:center; background-color:rgba(255, 255, 255, 0.7);"></div>
+    <div id="x-chart-perd-hb-week" class="x-body-contrianer" style="height:460px; margin:0px auto; text-align:center; background-color:rgba(255, 255, 255, 0.7); border-bottom:1px solid lightgray;"></div>
+    <div id="x-chart-perd-hb-month" class="x-body-contrianer" style="height:460px; margin:0px auto; text-align:center; background-color:rgba(255, 255, 255, 0.7);"></div>
 </div>
 
 <div class="x-contrainer" style="margin:35px auto; text-align:center;">
@@ -175,7 +176,8 @@
         $('div.x-body-contrianer').width(w);
         
         $("x-chart-perd").stackpie().draw();
-        $("x-chart-perd-hb").stackline().draw();
+        $("x-chart-perd-hb-week").stackline().draw();
+        $("x-chart-perd-hb-month").stackline2().draw();
 
     </script>
 }
